@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
+import { PINK_COLOR } from '../common/colors';
 
 export default function Post() {
-  return <Text>포스팅 공간</Text>;
+  return <Text>Post</Text>;
 }
