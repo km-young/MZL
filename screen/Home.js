@@ -6,13 +6,13 @@ import styled from '@emotion/native';
 export default function Home() {
   const { navigate } = useNavigation();
   return (
-    // <TouchableOpacity
-    //   onPress={() =>
-    //     navigate('Stacks', { screen: 'Detail', params: { test: 'test' } })
-    //   }
-    // >
-    //   <Text>홈 페이지</Text>
-    // </TouchableOpacity>
+    <TouchableOpacity
+      onPress={() =>
+        navigate('Stacks', { screen: 'Detail', params: { test: 'test' } })
+      }
+    >
+      <Text>홈 페이지</Text>
+    </TouchableOpacity
     <HomeContainer>
       <CategoryContainer>
         <Categorybutton>
