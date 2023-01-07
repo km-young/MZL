@@ -1,3 +1,4 @@
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
@@ -16,3 +17,6 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const dbService = getFirestore(app);
 
+// 작업 파일에서
+// import { dbService }
+// 해야합니다
