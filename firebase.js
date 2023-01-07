@@ -1,18 +1,20 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+// import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDCDXCLED4T_WbD3QAUhqEPJLlWwGf7qDg',
-  authDomain: 'rn-word-task.firebaseapp.com',
-  projectId: 'rn-word-task',
-  storageBucket: 'rn-word-task.appspot.com',
-  messagingSenderId: '503108080204',
-  appId: '1:503108080204:web:f4d36de600c856c500dae9',
+  apiKey: 'AIzaSyBTmH7XsYlUMgNCWN93RE7PAHIeiVDTAgI',
+  authDomain: 'rn-words-task.firebaseapp.com',
+  projectId: 'rn-words-task',
+  storageBucket: 'rn-words-task.appspot.com',
+  messagingSenderId: '708302215122',
+  appId: '1:708302215122:web:183931d711d2410c65da0b',
 };
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const dbService = getFirestore(app);
+// export const authService = getAuth(app);
 
 // 작업 파일에서
 // import { dbService }
