@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Text, TouchableOpacity } from 'react-native';
 import Detail from '../screen/Detail';
 import Register from '../screen/Register';
+import Home from '../screen/Home';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ export default function Stacks({ navigation: { goBack } }) {
         ),
       }}
     >
+      <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Detail" component={Detail} />
       <Stack.Screen name="Register" component={Register} />
     </Stack.Navigator>
