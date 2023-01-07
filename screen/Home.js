@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
+import styled from '@emotion/native';
 
 export default function Home() {
   const { navigate } = useNavigation();

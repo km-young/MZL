@@ -1,9 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { ScrollView, Text, useColorScheme, View } from 'react-native';
+import React, { useState } from 'react';
 import styled from '@emotion/native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { BLUE_COLOR } from '../common/colors';
-import { SCREEN_HEIGHT } from '../common/util';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { dbService } from '../firebase';
 import { addDoc, collection } from 'firebase/firestore';
@@ -25,6 +23,8 @@ export default function Post() {
     mean,
     tmi,
     category: value,
+    // auth기능 구현 되면 아래 userid사용
+    // userid: authService.currentUser?.uid,
     userid: '',
     isEdit: false,
     createdAt: Date.now(),
