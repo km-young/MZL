@@ -5,6 +5,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { BLUE_COLOR } from '../common/colors';
 import { SCREEN_HEIGHT } from '../common/util';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { dbService } from '../firebase';
+import { addDoc, collection } from 'firebase/firestore';
 
 export default function Post() {
   const [open, setOpen] = useState(false);
@@ -14,6 +16,28 @@ export default function Post() {
     { label: 'English', value: 'english' },
     { label: 'Chinese', value: 'chinese' },
   ]);
+  const [word, setWord] = useState('');
+  const [mean, setMean] = useState('');
+  const [tmi, setTmi] = useState('');
+
+  const newWord = {
+    word,
+    mean,
+    tmi,
+    category: value,
+    userid: '',
+    isEdit: false,
+    createdAt: Date.now(),
+  };
+
+  const addWord = async () => {
+    await addDoc(collection(dbService, 'Words'), newWord);
+    setWord('');
+    setMean('');
+    setTmi('');
+    setValue('');
+  };
+
   return (
     <Container>
       <InputBox style={{ zIndex: 1 }}>
@@ -24,7 +48,7 @@ export default function Post() {
           items={category}
           setOpen={setOpen}
           setValue={setValue}
-          setItems={setCategory}
+          setItems={() => setCategory}
           placeholder="Select Category"
           zIndex={9000}
         />
@@ -32,7 +56,7 @@ export default function Post() {
       <KeyboardAwareScrollView extraScrollHeight={80}>
         <InputBox>
           <InputLabel>단어</InputLabel>
-          <Input />
+          <Input value={word} onChangeText={(text) => setWord(text)} />
         </InputBox>
         <InputBox>
           <InputLabel>의미</InputLabel>
@@ -40,6 +64,8 @@ export default function Post() {
             style={{ height: 120 }}
             textAlignVertical="top"
             multiline={true}
+            value={mean}
+            onChangeText={(text) => setMean(text)}
           />
         </InputBox>
         <InputBox>
@@ -48,9 +74,11 @@ export default function Post() {
             style={{ height: 120 }}
             textAlignVertical="top"
             multiline={true}
+            value={tmi}
+            onChangeText={(text) => setTmi(text)}
           />
         </InputBox>
-        <SubmitButton>
+        <SubmitButton onPress={addWord}>
           <SBtnText>등록</SBtnText>
         </SubmitButton>
       </KeyboardAwareScrollView>
