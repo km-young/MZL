@@ -12,7 +12,7 @@ export default function Home() {
       }
     >
       <Text>홈 페이지</Text>
-    </TouchableOpacity
+    </TouchableOpacity>
     <HomeContainer>
       <CategoryContainer>
         <Categorybutton>
