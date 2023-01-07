@@ -6,6 +6,7 @@ import styled from '@emotion/native';
 export default function Home() {
   const { navigate } = useNavigation();
   return (
+    <>
     <TouchableOpacity
       onPress={() =>
         navigate('Stacks', { screen: 'Detail', params: { test: 'test' } })
@@ -116,6 +117,7 @@ export default function Home() {
         </CardListContainer>
       </ScrollView>
     </HomeContainer>
+  </>
   );
 }
 const HomeContainer = styled.View`
