@@ -3,13 +3,16 @@ import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import styled from '@emotion/native';
 
-export default function Home() {
+export default function Home({ postId }) {
   const { navigate } = useNavigation();
   return (
     <>
       <TouchableOpacity
         onPress={() =>
-          navigate('Stacks', { screen: 'Detail', params: { test: 'test' } })
+          navigate('Stacks', {
+            screen: 'Detail',
+            params: { postId: 'V9JbfFhrS6pdmORAmXqW' },
+          })
         }
       >
         <Text>홈 페이지</Text>
