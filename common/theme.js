@@ -1,15 +1,9 @@
 export const darkTheme = {
   title: 'white',
-  shadowColor: '#000',
-  shadowOffset: { width: 1, height: 1 },
-  shadowOpacity: 0.2,
-  shadowRadius: 3,
+  boxShadow: '1px 1px 3px rgba(0, 0, 0, 0.2)',
 };
 
 export const lightTheme = {
   title: 'black',
-  shadowColor: '#fff',
-  shadowOffset: { width: 1, height: 1 },
-  shadowOpacity: 0.1,
-  shadowRadius: 3,
+  boxShadow: '1px 1px 3px rgba(255, 255, 255, 0.2)',
 };
