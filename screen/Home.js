@@ -121,6 +121,7 @@ export default function Home({ postId }) {
         </ScrollView>
       </HomeContainer>
     </>
+
   );
 }
 const HomeContainer = styled.View`
