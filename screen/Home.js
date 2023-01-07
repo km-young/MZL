@@ -3,121 +3,125 @@ import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import styled from '@emotion/native';
 
-export default function Home() {
+export default function Home({ postId }) {
   const { navigate } = useNavigation();
   return (
     <>
-    <TouchableOpacity
-      onPress={() =>
-        navigate('Stacks', { screen: 'Detail', params: { test: 'test' } })
-      }
-    >
-      <Text>홈 페이지</Text>
-    </TouchableOpacity>
-    <HomeContainer>
-      <CategoryContainer>
-        <Categorybutton>
-          <Text>KOREAN</Text>
-        </Categorybutton>
-        <Categorybutton>
-          <Text>ENGLISH</Text>
-        </Categorybutton>
-        <Categorybutton>
-          <Text>CHINESE</Text>
-        </Categorybutton>
-      </CategoryContainer>
-      <ScrollView>
-        <CardListContainer style={{ height: '100%', padding: 20 }}>
-          <CardContainer>
-            <CardList>
-              <TextBox>갑분싸</TextBox>
-              <CardBorder></CardBorder>
-            </CardList>
-          </CardContainer>
-        </CardListContainer>
-        <CardListContainer style={{ height: '100%', padding: 20 }}>
-          <CardContainer>
-            <CardList>
-              <TextBox>갑분싸</TextBox>
-              <CardBorder></CardBorder>
-            </CardList>
-          </CardContainer>
-        </CardListContainer>
-        <CardListContainer style={{ height: '100%', padding: 20 }}>
-          <CardContainer>
-            <CardList>
-              <TextBox>갑분싸</TextBox>
-              <CardBorder></CardBorder>
-            </CardList>
-          </CardContainer>
-        </CardListContainer>
-        <CardListContainer style={{ height: '100%', padding: 20 }}>
-          <CardContainer>
-            <CardList>
-              <TextBox>갑분싸</TextBox>
-              <CardBorder></CardBorder>
-            </CardList>
-          </CardContainer>
-        </CardListContainer>
-        <CardListContainer style={{ height: '100%', padding: 20 }}>
-          <CardContainer>
-            <CardList>
-              <TextBox>갑분싸</TextBox>
-              <CardBorder></CardBorder>
-            </CardList>
-          </CardContainer>
-        </CardListContainer>
-        <CardListContainer style={{ height: '100%', padding: 20 }}>
-          <CardContainer>
-            <CardList>
-              <TextBox>갑분싸</TextBox>
-              <CardBorder></CardBorder>
-            </CardList>
-          </CardContainer>
-        </CardListContainer>
-        <CardListContainer style={{ height: '100%', padding: 20 }}>
-          <CardContainer>
-            <CardList>
-              <TextBox>갑분싸</TextBox>
-              <CardBorder></CardBorder>
-            </CardList>
-          </CardContainer>
-        </CardListContainer>
-        <CardListContainer style={{ height: '100%', padding: 20 }}>
-          <CardContainer>
-            <CardList>
-              <TextBox>갑분싸</TextBox>
-              <CardBorder></CardBorder>
-            </CardList>
-          </CardContainer>
-        </CardListContainer>
-        <CardListContainer style={{ height: '100%', padding: 20 }}>
-          <CardContainer>
-            <CardList>
-              <TextBox>갑분싸</TextBox>
-              <CardBorder></CardBorder>
-            </CardList>
-          </CardContainer>
-        </CardListContainer>
-        <CardListContainer style={{ height: '100%', padding: 20 }}>
-          <CardContainer>
-            <CardList>
-              <TextBox>갑분싸</TextBox>
-              <CardBorder></CardBorder>
-            </CardList>
-          </CardContainer>
-        </CardListContainer>
-        <CardListContainer style={{ height: '100%', padding: 20 }}>
-          <CardContainer>
-            <CardList>
-              <TextBox>갑분싸</TextBox>
-              <CardBorder></CardBorder>
-            </CardList>
-          </CardContainer>
-        </CardListContainer>
-      </ScrollView>
-    </HomeContainer>
-  </>
+      <TouchableOpacity
+        onPress={() =>
+          navigate('Stacks', {
+            screen: 'Detail',
+            params: { postId: 'V9JbfFhrS6pdmORAmXqW' },
+          })
+        }
+      >
+        <Text>홈 페이지</Text>
+      </TouchableOpacity>
+      <HomeContainer>
+        <CategoryContainer>
+          <Categorybutton>
+            <Text>KOREAN</Text>
+          </Categorybutton>
+          <Categorybutton>
+            <Text>ENGLISH</Text>
+          </Categorybutton>
+          <Categorybutton>
+            <Text>CHINESE</Text>
+          </Categorybutton>
+        </CategoryContainer>
+        <ScrollView>
+          <CardListContainer style={{ height: '100%', padding: 20 }}>
+            <CardContainer>
+              <CardList>
+                <TextBox>갑분싸</TextBox>
+                <CardBorder></CardBorder>
+              </CardList>
+            </CardContainer>
+          </CardListContainer>
+          <CardListContainer style={{ height: '100%', padding: 20 }}>
+            <CardContainer>
+              <CardList>
+                <TextBox>갑분싸</TextBox>
+                <CardBorder></CardBorder>
+              </CardList>
+            </CardContainer>
+          </CardListContainer>
+          <CardListContainer style={{ height: '100%', padding: 20 }}>
+            <CardContainer>
+              <CardList>
+                <TextBox>갑분싸</TextBox>
+                <CardBorder></CardBorder>
+              </CardList>
+            </CardContainer>
+          </CardListContainer>
+          <CardListContainer style={{ height: '100%', padding: 20 }}>
+            <CardContainer>
+              <CardList>
+                <TextBox>갑분싸</TextBox>
+                <CardBorder></CardBorder>
+              </CardList>
+            </CardContainer>
+          </CardListContainer>
+          <CardListContainer style={{ height: '100%', padding: 20 }}>
+            <CardContainer>
+              <CardList>
+                <TextBox>갑분싸</TextBox>
+                <CardBorder></CardBorder>
+              </CardList>
+            </CardContainer>
+          </CardListContainer>
+          <CardListContainer style={{ height: '100%', padding: 20 }}>
+            <CardContainer>
+              <CardList>
+                <TextBox>갑분싸</TextBox>
+                <CardBorder></CardBorder>
+              </CardList>
+            </CardContainer>
+          </CardListContainer>
+          <CardListContainer style={{ height: '100%', padding: 20 }}>
+            <CardContainer>
+              <CardList>
+                <TextBox>갑분싸</TextBox>
+                <CardBorder></CardBorder>
+              </CardList>
+            </CardContainer>
+          </CardListContainer>
+          <CardListContainer style={{ height: '100%', padding: 20 }}>
+            <CardContainer>
+              <CardList>
+                <TextBox>갑분싸</TextBox>
+                <CardBorder></CardBorder>
+              </CardList>
+            </CardContainer>
+          </CardListContainer>
+          <CardListContainer style={{ height: '100%', padding: 20 }}>
+            <CardContainer>
+              <CardList>
+                <TextBox>갑분싸</TextBox>
+                <CardBorder></CardBorder>
+              </CardList>
+            </CardContainer>
+          </CardListContainer>
+          <CardListContainer style={{ height: '100%', padding: 20 }}>
+            <CardContainer>
+              <CardList>
+                <TextBox>갑분싸</TextBox>
+                <CardBorder></CardBorder>
+              </CardList>
+            </CardContainer>
+          </CardListContainer>
+          <CardListContainer style={{ height: '100%', padding: 20 }}>
+            <CardContainer>
+              <CardList>
+                <TextBox>갑분싸</TextBox>
+                <CardBorder></CardBorder>
+              </CardList>
+            </CardContainer>
+          </CardListContainer>
+        </ScrollView>
+      </HomeContainer>
+    </>
+
   );
 }
 const HomeContainer = styled.View`
