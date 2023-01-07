@@ -1,9 +1,10 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Text } from 'react-native';
 import styled from '@emotion/native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Login() {
+  const { navigate } = useNavigation();
   return (
     <ContainerView>
       <StatusBar />
@@ -13,7 +14,11 @@ export default function Login() {
         <Buttons>
           <ButtonsText>LOGIN</ButtonsText>
         </Buttons>
-        <Buttons>
+        <Buttons
+          onPress={() =>
+            navigate('Stacks', { screen: 'Register', params: { test: 'test' } })
+          }
+        >
           <ButtonsText>REGISTER</ButtonsText>
         </Buttons>
       </AuthLoginContainerView>
@@ -55,10 +60,10 @@ const Buttons = styled.TouchableOpacity`
   width: 100px;
   text-align: center;
   margin-top: 30px;
-`
+`;
 
 const ButtonsText = styled.Text`
   text-align: center;
   height: 20px;
   line-height: 20px;
-`
+`;
