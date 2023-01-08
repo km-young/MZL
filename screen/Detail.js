@@ -15,7 +15,6 @@ import {
   deleteDoc,
 } from 'firebase/firestore';
 import { dbService } from '../firebase';
-import Edit from '../components/Edit';
 
 export default function Detail({
   navigation: { navigate },
@@ -73,11 +72,14 @@ export default function Detail({
   //   getCategory();
   // }, []);
 
+
+  // 현재 수정,완료 버튼을 누르게 되면 데이터 isEdit은 바뀌지만 화면 렌더링이 늦어지고 있음.
+  // 월요일 확인하여 수정예정.. 이유는 모르겠음..비동기적인 문제인가?
+  
   // 누르면 isEdit이 true/false로 변경됨
   const setEdit = async (id) => {
-    const idx = posts.findIndex((post) => post.id === id);
     await updateDoc(doc(dbService, 'Words', id), {
-      isEdit: !posts[idx].isEdit,
+      isEdit: !word.isEdit,
     });
   };
 
@@ -99,14 +101,14 @@ export default function Detail({
             <Section>
               <Title>단어(수정)</Title>
               <TextBox background="#C2E1FF">
-                <InputBox onChangeText={SetEditWord} defaultValue={post.word} />
+                <InputBox onChangeText={SetEditWord} defaultValue={word.word} />
               </TextBox>
             </Section>
 
             <Section>
               <Title>의미(수정)</Title>
               <TextBox background="#C2E1FF">
-                <InputBox onChangeText={SetEditMean} defaultValue={post.mean} />
+                <InputBox onChangeText={SetEditMean} defaultValue={word.mean} />
               </TextBox>
             </Section>
 
@@ -115,7 +117,7 @@ export default function Detail({
               <TextBox background="#C2E1FF">
                 <InputBox
                   onChangeText={SetEditTmi}
-                  defaultValue={post.tmi}
+                  defaultValue={word.tmi}
                   multiline={true}
                   numberOfLines={10}
                 />
@@ -185,4 +187,7 @@ const ButtonBox = styled.View`
 `;
 const Btn = styled.TouchableOpacity`
   padding: 30px 10px;
+`;
+const InputBox = styled.TextInput`
+  background-color: #c2e1ff;
 `;
