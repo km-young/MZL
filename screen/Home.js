@@ -5,6 +5,9 @@ import styled from '@emotion/native';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { dbService } from '../firebase';
 
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../common/util';
+import { PINK_COLOR } from '../common/colors';
+
 export default function Home({ postId }) {
   const { navigate } = useNavigation();
   const [text, setText] = useState('');
@@ -31,7 +34,7 @@ export default function Home({ postId }) {
   useEffect(() => {
     const q = query(
       collection(dbService, 'Words'),
-      orderBy('createdAt', 'desc'),
+      orderBy('category', 'desc'),
     );
 
     onSnapshot(q, (snapshot) => {
@@ -47,13 +50,13 @@ export default function Home({ postId }) {
       setWord(newWord);
     });
 
-    // const getCategory = async () => {
-    //   const snapshot = await getDoc(doc(dbService, 'Words'));
+    const getCategory = async () => {
+      const snapshot = await getDoc(doc(dbService, 'Words'));
 
-    //   setCategory(snapshot.date().category);
-    // };
+      setCategory(snapshot.date().category);
+    };
 
-    // getCategory();
+    getCategory();
   }, []);
   return (
     <>
@@ -70,13 +73,13 @@ export default function Home({ postId }) {
       <HomeContainer>
         <CategoryContainer>
           <Categorybutton>
-            <Text>KOREAN</Text>
+            <ButtonText>KOREAN</ButtonText>
           </Categorybutton>
           <Categorybutton>
-            <Text>ENGLISH</Text>
+            <ButtonText>ENGLISH</ButtonText>
           </Categorybutton>
           <Categorybutton>
-            <Text>CHINESE</Text>
+            <ButtonText>CHINESE</ButtonText>
           </Categorybutton>
         </CategoryContainer>
         <ScrollView>
@@ -101,6 +104,9 @@ export default function Home({ postId }) {
 }
 const HomeContainer = styled.View`
   flex: 1;
+`;
+const ButtonText = styled.Text`
+  font-weight: 600;
 `;
 const CategoryContainer = styled.View`
   flex-direction: row;
@@ -127,11 +133,10 @@ const TextBox = styled.Text`
 
 const CardList = styled.TouchableOpacity`
   position: relative;
-  background-color: #ffebec;
+  background-color: ${PINK_COLOR};
   box-shadow: 2px 2px 2px #555;
   align-items: flex-start;
   justify-content: flex-end;
-  stroke: 1px solid #f2aeb4;
   padding-bottom: 10px;
   padding-left: 15px;
   width: 350px;
