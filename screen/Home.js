@@ -1,10 +1,44 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import styled from '@emotion/native';
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { dbService } from '../firebase';
+
+import { PINK_COLOR } from '../common/colors';
 
 export default function Home({ postId }) {
   const { navigate } = useNavigation();
+  const [text, setText] = useState('');
+  const [word, setWord] = useState([]);
+  const [category, setCategory] = useState([
+    { label: 'korean', value: 'korean' },
+    { label: 'english', value: 'english' },
+    { label: 'chinese', value: 'chinese' },
+  ]);
+
+  const [categoryList] = useState(['korean', 'english', 'chinese']);
+
+  useEffect(() => {
+    const q = query(
+      collection(dbService, 'Words'),
+      orderBy('createdAt', 'desc'),
+    );
+
+    onSnapshot(q, (snapshot) => {
+      const newWords = snapshot.docs.map((doc) => {
+        const newWord = {
+          id: doc.id,
+          ...doc.data(),
+        };
+
+        return newWord;
+      });
+
+      setWord(newWords);
+    });
+  }, []);
+
   return (
     <>
       <TouchableOpacity
@@ -19,103 +53,30 @@ export default function Home({ postId }) {
       </TouchableOpacity>
       <HomeContainer>
         <CategoryContainer>
-          <Categorybutton>
-            <Text>KOREAN</Text>
-          </Categorybutton>
-          <Categorybutton>
-            <Text>ENGLISH</Text>
-          </Categorybutton>
-          <Categorybutton>
-            <Text>CHINESE</Text>
-          </Categorybutton>
+          {categoryList.map((item) => (
+            <CategoryButton
+              key={item}
+              onPress={() => {
+                setCategory(item);
+              }}
+            >
+              <ButtonText>{item}</ButtonText>
+            </CategoryButton>
+          ))}
         </CategoryContainer>
         <ScrollView>
-          <CardListContainer style={{ height: '100%', padding: 20 }}>
+          <CardListContainer>
             <CardContainer>
-              <CardList>
-                <TextBox>갑분싸</TextBox>
-                <CardBorder></CardBorder>
-              </CardList>
-            </CardContainer>
-          </CardListContainer>
-          <CardListContainer style={{ height: '100%', padding: 20 }}>
-            <CardContainer>
-              <CardList>
-                <TextBox>갑분싸</TextBox>
-                <CardBorder></CardBorder>
-              </CardList>
-            </CardContainer>
-          </CardListContainer>
-          <CardListContainer style={{ height: '100%', padding: 20 }}>
-            <CardContainer>
-              <CardList>
-                <TextBox>갑분싸</TextBox>
-                <CardBorder></CardBorder>
-              </CardList>
-            </CardContainer>
-          </CardListContainer>
-          <CardListContainer style={{ height: '100%', padding: 20 }}>
-            <CardContainer>
-              <CardList>
-                <TextBox>갑분싸</TextBox>
-                <CardBorder></CardBorder>
-              </CardList>
-            </CardContainer>
-          </CardListContainer>
-          <CardListContainer style={{ height: '100%', padding: 20 }}>
-            <CardContainer>
-              <CardList>
-                <TextBox>갑분싸</TextBox>
-                <CardBorder></CardBorder>
-              </CardList>
-            </CardContainer>
-          </CardListContainer>
-          <CardListContainer style={{ height: '100%', padding: 20 }}>
-            <CardContainer>
-              <CardList>
-                <TextBox>갑분싸</TextBox>
-                <CardBorder></CardBorder>
-              </CardList>
-            </CardContainer>
-          </CardListContainer>
-          <CardListContainer style={{ height: '100%', padding: 20 }}>
-            <CardContainer>
-              <CardList>
-                <TextBox>갑분싸</TextBox>
-                <CardBorder></CardBorder>
-              </CardList>
-            </CardContainer>
-          </CardListContainer>
-          <CardListContainer style={{ height: '100%', padding: 20 }}>
-            <CardContainer>
-              <CardList>
-                <TextBox>갑분싸</TextBox>
-                <CardBorder></CardBorder>
-              </CardList>
-            </CardContainer>
-          </CardListContainer>
-          <CardListContainer style={{ height: '100%', padding: 20 }}>
-            <CardContainer>
-              <CardList>
-                <TextBox>갑분싸</TextBox>
-                <CardBorder></CardBorder>
-              </CardList>
-            </CardContainer>
-          </CardListContainer>
-          <CardListContainer style={{ height: '100%', padding: 20 }}>
-            <CardContainer>
-              <CardList>
-                <TextBox>갑분싸</TextBox>
-                <CardBorder></CardBorder>
-              </CardList>
-            </CardContainer>
-          </CardListContainer>
-          <CardListContainer style={{ height: '100%', padding: 20 }}>
-            <CardContainer>
-              <CardList>
-                <TextBox>갑분싸</TextBox>
-                <CardBorder></CardBorder>
-              </CardList>
+              {word.map((item) => {
+                if (item.category === category) {
+                  return (
+                    <CardList key={item.id}>
+                      <TextBox>{item.mean}</TextBox>
+                      <CardBorder></CardBorder>
+                    </CardList>
+                  );
+                }
+              })}
             </CardContainer>
           </CardListContainer>
         </ScrollView>
@@ -126,6 +87,9 @@ export default function Home({ postId }) {
 const HomeContainer = styled.View`
   flex: 1;
 `;
+const ButtonText = styled.Text`
+  font-weight: 600;
+`;
 const CategoryContainer = styled.View`
   flex-direction: row;
   align-items: flex-start;
@@ -133,7 +97,7 @@ const CategoryContainer = styled.View`
   margin-top: 10px;
   margin-bottom: 0px;
 `;
-const Categorybutton = styled.TouchableOpacity`
+const CategoryButton = styled.TouchableOpacity`
   margin: 10px 40px 10px 40px;
 `;
 
@@ -151,14 +115,15 @@ const TextBox = styled.Text`
 
 const CardList = styled.TouchableOpacity`
   position: relative;
-  background-color: #ffebec;
+  background-color: ${PINK_COLOR};
   box-shadow: 2px 2px 2px #555;
   align-items: flex-start;
   justify-content: flex-end;
-  stroke: 1px solid #f2aeb4;
-  padding: 15px;
+  padding-bottom: 10px;
+  padding-left: 15px;
   width: 350px;
   height: 70px;
+  margin: 10px;
 `;
 const CardContainer = styled.View``;
 const CardBorder = styled.View`
