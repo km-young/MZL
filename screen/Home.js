@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import styled from '@emotion/native';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { dbService } from '../firebase';
-import { PINK_COLOR } from '../common/colors';
+import { PINK_COLOR, GREEN_COLOR, YELLOW_COLOR } from '../common/colors';
 
 export default function Home() {
   const { navigate } = useNavigation();
@@ -35,6 +35,7 @@ export default function Home() {
   return (
     <>
       <HomeContainer>
+        {/* //header // list header component */}
         <CategoryContainer>
           {categoryList.map((item) => (
             <CategoryButton
@@ -48,12 +49,23 @@ export default function Home() {
           ))}
         </CategoryContainer>
         <ScrollView>
+          {/* //data */}
           <CardListContainer>
             <CardContainer>
               {category
                 ? filteredWord.map((item) => {
                     return (
                       <CardList
+                        style={{
+                          backgroundColor:
+                            item.category === 'korean'
+                              ? PINK_COLOR
+                              : item.category === 'english'
+                              ? GREEN_COLOR
+                              : item.category === 'chinese'
+                              ? YELLOW_COLOR
+                              : 'transparent',
+                        }}
                         key={item.id}
                         onPress={() => {
                           navigate('Stacks', {
@@ -63,13 +75,34 @@ export default function Home() {
                         }}
                       >
                         <TextBox>{item.mean}</TextBox>
-                        <CardBorder></CardBorder>
+                        <CardBorder
+                          style={{
+                            borderColor:
+                              item.category === 'korean'
+                                ? '#F2AEB4'
+                                : item.category === 'english'
+                                ? '#46D989'
+                                : item.category === 'chinese'
+                                ? '#FFC818'
+                                : 'transparent',
+                          }}
+                        ></CardBorder>
                       </CardList>
                     );
                   })
                 : word.map((item) => {
                     return (
                       <CardList
+                        style={{
+                          backgroundColor:
+                            item.category === 'korean'
+                              ? PINK_COLOR
+                              : item.category === 'english'
+                              ? GREEN_COLOR
+                              : item.category === 'chinese'
+                              ? YELLOW_COLOR
+                              : 'transparent',
+                        }}
                         key={item.id}
                         onPress={() => {
                           navigate('Stacks', {
@@ -79,7 +112,18 @@ export default function Home() {
                         }}
                       >
                         <TextBox>{item.mean}</TextBox>
-                        <CardBorder></CardBorder>
+                        <CardBorder
+                          style={{
+                            borderColor:
+                              item.category === 'korean'
+                                ? '#F2AEB4'
+                                : item.category === 'english'
+                                ? '#46D989'
+                                : item.category === 'chinese'
+                                ? '#FFC818'
+                                : 'transparent',
+                          }}
+                        ></CardBorder>
                       </CardList>
                     );
                   })}
