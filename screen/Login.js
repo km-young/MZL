@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 import { Text } from 'react-native';
-import { async } from '@firebase/util';
 
 export default function Login() {
   const { navigate } = useNavigation();
@@ -86,11 +85,7 @@ export default function Login() {
         <Buttons>
           <ButtonsText onPress={() => onSubmitLogin()}>LOGIN</ButtonsText>
         </Buttons>
-        <Buttons
-          onPress={() =>
-            navigate('Stacks', { screen: 'Register', params: { test: 'test' } })
-          }
-        >
+        <Buttons onPress={() => navigate('Stacks', { screen: 'Register' })}>
           <ButtonsText>REGISTER</ButtonsText>
         </Buttons>
       </AuthLoginContainerView>

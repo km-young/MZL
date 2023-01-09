@@ -4,7 +4,6 @@ import { Alert, Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { async } from '@firebase/util';
 
 export default function Register() {
   const [displayName, setDisplayName] = useState('');
