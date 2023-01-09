@@ -9,7 +9,7 @@ import { PINK_COLOR } from '../common/colors';
 
 export default function Home({ postId }) {
   const { navigate } = useNavigation();
-  const [text, setText] = useState('');
+
   const [word, setWord] = useState([]);
   const [category, setCategory] = useState([
     { label: 'korean', value: 'korean' },
@@ -41,16 +41,6 @@ export default function Home({ postId }) {
 
   return (
     <>
-      <TouchableOpacity
-        onPress={() =>
-          navigate('Stacks', {
-            screen: 'Detail',
-            params: { postId: 'V9JbfFhrS6pdmORAmXqW' },
-          })
-        }
-      >
-        <Text>홈 페이지</Text>
-      </TouchableOpacity>
       <HomeContainer>
         <CategoryContainer>
           {categoryList.map((item) => (
@@ -70,7 +60,15 @@ export default function Home({ postId }) {
               {word.map((item) => {
                 if (item.category === category) {
                   return (
-                    <CardList key={item.id}>
+                    <CardList
+                      key={item.id}
+                      onPress={() => {
+                        navigate('Stacks', {
+                          screen: 'Detail',
+                          params: { id },
+                        });
+                      }}
+                    >
                       <TextBox>{item.mean}</TextBox>
                       <CardBorder></CardBorder>
                     </CardList>
