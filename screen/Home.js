@@ -5,7 +5,6 @@ import styled from '@emotion/native';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { dbService } from '../firebase';
 
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../common/util';
 import { PINK_COLOR } from '../common/colors';
 
 export default function Home({ postId }) {
@@ -13,51 +12,33 @@ export default function Home({ postId }) {
   const [text, setText] = useState('');
   const [word, setWord] = useState([]);
   const [category, setCategory] = useState([
-    { label: 'Korean', value: 'korean' },
-    { label: 'English', value: 'english' },
-    { label: 'Chinese', value: 'chinese' },
+    { label: 'korean', value: 'korean' },
+    { label: 'english', value: 'english' },
+    { label: 'chinese', value: 'chinese' },
   ]);
-  const [value, setValue] = useState(null);
-  const [mean, setMean] = useState('');
-  const [tmi, setTmi] = useState('');
 
-  const newWord = {
-    word,
-    mean,
-    tmi,
-    category: value,
-    userid: '',
-    isEdit: false,
-    createdAt: Date.now(),
-  };
+  const [categoryList] = useState(['korean', 'english', 'chinese']);
 
   useEffect(() => {
     const q = query(
       collection(dbService, 'Words'),
-      orderBy('category', 'desc'),
+      orderBy('createdAt', 'desc'),
     );
 
     onSnapshot(q, (snapshot) => {
-      const newWord = snapshot.docs.map((doc) => {
-        const newWords = {
+      const newWords = snapshot.docs.map((doc) => {
+        const newWord = {
           id: doc.id,
           ...doc.data(),
         };
 
-        return newWords;
+        return newWord;
       });
 
-      setWord(newWord);
+      setWord(newWords);
     });
-
-    const getCategory = async () => {
-      const snapshot = await getDoc(doc(dbService, 'Words'));
-
-      setCategory(snapshot.date().category);
-    };
-
-    getCategory();
   }, []);
+
   return (
     <>
       <TouchableOpacity
@@ -72,28 +53,29 @@ export default function Home({ postId }) {
       </TouchableOpacity>
       <HomeContainer>
         <CategoryContainer>
-          <Categorybutton>
-            <ButtonText>KOREAN</ButtonText>
-          </Categorybutton>
-          <Categorybutton>
-            <ButtonText>ENGLISH</ButtonText>
-          </Categorybutton>
-          <Categorybutton>
-            <ButtonText>CHINESE</ButtonText>
-          </Categorybutton>
+          {categoryList.map((item) => (
+            <CategoryButton
+              key={item}
+              onPress={() => {
+                setCategory(item);
+              }}
+            >
+              <ButtonText>{item}</ButtonText>
+            </CategoryButton>
+          ))}
         </CategoryContainer>
         <ScrollView>
           <CardListContainer>
             <CardContainer>
               {word.map((item) => {
-                // if (category === item.category) {
-                return (
-                  <CardList key={item.id}>
-                    <TextBox>{item.mean}</TextBox>
-                    <CardBorder></CardBorder>
-                  </CardList>
-                );
-                // }
+                if (item.category === category) {
+                  return (
+                    <CardList key={item.id}>
+                      <TextBox>{item.mean}</TextBox>
+                      <CardBorder></CardBorder>
+                    </CardList>
+                  );
+                }
               })}
             </CardContainer>
           </CardListContainer>
@@ -115,7 +97,7 @@ const CategoryContainer = styled.View`
   margin-top: 10px;
   margin-bottom: 0px;
 `;
-const Categorybutton = styled.TouchableOpacity`
+const CategoryButton = styled.TouchableOpacity`
   margin: 10px 40px 10px 40px;
 `;
 
