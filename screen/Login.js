@@ -7,8 +7,8 @@ import { auth } from '../firebase';
 import { Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-export default function Login() {
-  const { navigate } = useNavigation();
+export default function Login({ navigation: { navigate, reset } }) {
+  // const { navigate } = useNavigation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -48,7 +48,17 @@ export default function Login() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        navigate('Stacks', { screen: 'Home', params: { test: 'test' } });
+        reset({
+          index: 0,
+          routes: [
+            {
+              name: 'Tabs',
+              params: {
+                screen: 'Home',
+              },
+            },
+          ],
+        });
       })
       .catch((error) => {
         const errorCode = error.code;

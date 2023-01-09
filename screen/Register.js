@@ -5,7 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
-export default function Register() {
+export default function Register({ navigation: { navigate, reset } }) {
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -67,6 +67,17 @@ export default function Register() {
         })
           .then(() => {
             console.log('🚀 Profile updated!', userCredential);
+            reset({
+              index: 0,
+              routes: [
+                {
+                  name: 'Tabs',
+                  params: {
+                    screen: 'Home',
+                  },
+                },
+              ],
+            });
           })
           .catch((error) => {
             const errorCode = error.code;
@@ -78,7 +89,7 @@ export default function Register() {
         const errorCode = error.code;
         const errorMessage = error.message;
         if (errorMessage.includes('email-already-in-use')) {
-          Alert.alert('🚨', '이미 가입된 이메일입니다.');
+          alertTextTimer('🚨', '이미 가입된 이메일입니다.');
           focusEmail.current.focus();
           return;
         }
