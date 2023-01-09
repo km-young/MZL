@@ -24,9 +24,7 @@ export default function Detail({
 }) {
   const [category, setCategory] = useState('');
   const [posts, setPosts] = useState([]);
-  const [mean, setMean] = useState('');
   const [word, setWord] = useState({});
-  const [tmi, setTmi] = useState('');
 
   const [editMean, SetEditMean] = useState('');
   const [editWord, SetEditWord] = useState('');
@@ -35,10 +33,6 @@ export default function Detail({
   console.log(word);
   // get해오는부분
   useEffect(() => {
-    // const q = query(
-    //   collection(dbService, 'Words'),
-    //   orderBy('createdAt', 'desc'), // 해당 collection 내의 docs들을 createdAt 속성을 내림차순 기준으로
-    // );
     const getWord = async () => {
       const snapshot = await getDoc(doc(dbService, 'Words', postId));
       const data = snapshot.data(); // 가져온 doc의 객체 내용
@@ -49,32 +43,6 @@ export default function Detail({
     getWord();
   }, []);
 
-  // onSnapshot(q, (snapshot) => {
-  //   // q (쿼리)안에 담긴 collection 내의 변화가 생길 때 마다 매번 실행됨
-  //   const newPosts = snapshot.docs.map((doc) => {
-  //     const newPost = {
-  //       id: doc.id,
-  //       ...doc.data(), // doc.data() : { text, createdAt, ...  }
-  //     };
-  //     return newPost;
-  //   });
-  //   setPosts(newPosts);
-  //   console.log(newPosts)
-  // });
-
-  // 단일데이터를 가지고와야함.
-
-  //   const getCategory = async () => {
-  //     const snapshot = await getDoc(
-  //       doc(dbService, 'Category', 'currentCategory'),
-  //     );
-  //   };
-  //   getCategory();
-  // }, []);
-
-
-  // 현재 수정,완료 버튼을 누르게 되면 데이터 isEdit은 바뀌지만 화면 렌더링이 늦어지고 있음.
-  // 월요일 확인하여 수정예정.. 이유는 모르겠음..비동기적인 문제인가?
   
   // 누르면 isEdit이 true/false로 변경됨
   const setEdit = async (id) => {
