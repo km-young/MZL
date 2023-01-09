@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 import { Text } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function Login() {
   const { navigate } = useNavigation();
@@ -65,47 +66,55 @@ export default function Login() {
   return (
     <ContainerView>
       <StatusBar />
-      <AuthLoginContainerView>
-        <TitleText>회원 로그인</TitleText>
-        <Text style={{ color: 'red', height: 20 }}>{alertText}</Text>
-        <IDInput
-          value={email}
-          onChangeText={setEmail}
-          placeholder="E-MAIL"
-          ref={focusEmail}
-          onSubmitEditing={() => focusPw.current.focus()}
-        />
-        <PWInput
-          value={password}
-          onChangeText={setPassword}
-          placeholder="PW"
-          ref={focusPw}
-          onSubmitEditing={() => onSubmitLogin()}
-        />
-        <Buttons>
-          <ButtonsText onPress={() => onSubmitLogin()}>LOGIN</ButtonsText>
-        </Buttons>
-        <Buttons onPress={() => navigate('Stacks', { screen: 'Register' })}>
-          <ButtonsText>REGISTER</ButtonsText>
-        </Buttons>
-      </AuthLoginContainerView>
+      <KeyboardAwareScrollView
+        style={{ paddingHorizontal: 30 }}
+        extraScrollHeight={150}
+      >
+        <AuthLoginContainerView>
+          <TitleText>회원 로그인</TitleText>
+          <Text style={{ color: 'red', height: 20 }}>{alertText}</Text>
+          <IDInput
+            value={email}
+            onChangeText={setEmail}
+            placeholder="E-MAIL"
+            ref={focusEmail}
+            onSubmitEditing={() => focusPw.current.focus()}
+          />
+          <PWInput
+            value={password}
+            onChangeText={setPassword}
+            placeholder="PW"
+            ref={focusPw}
+            onSubmitEditing={() => onSubmitLogin()}
+            // autoComplete="password"
+            // textContentType="password"
+            // secureTextEntry={true}
+          />
+          <Buttons>
+            <ButtonsText onPress={() => onSubmitLogin()}>LOGIN</ButtonsText>
+          </Buttons>
+          <Buttons onPress={() => navigate('Stacks', { screen: 'Register' })}>
+            <ButtonsText>REGISTER</ButtonsText>
+          </Buttons>
+        </AuthLoginContainerView>
+      </KeyboardAwareScrollView>
     </ContainerView>
   );
 }
 
 const ContainerView = styled.View`
-  background-color: white;
-  height: 100%;
+  flex: 1;
   justify-content: center;
   align-items: center;
 `;
 const AuthLoginContainerView = styled.View`
   width: 340px;
-  height: 340px;
   background-color: #c7f5dd;
   box-shadow: 1px 4px 4px #808080;
   justify-content: center;
   align-items: center;
+  margin-top: 30%;
+  padding: 10%;
 `;
 const TitleText = styled.Text`
   font-size: 24px;

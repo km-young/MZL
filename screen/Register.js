@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import styled from '@emotion/native';
-import { Alert, Text } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
@@ -22,32 +22,37 @@ export default function Register() {
 
   console.log(displayName, email, password);
 
+  const alertTextTimer = (message) => {
+    setAlertText(message);
+    setTimeout(() => setAlertText(''), 3000);
+  };
+
   const onSubmitRegister = async () => {
     // 유효성 검사 진행
     if (!displayName) {
-      setAlertText('닉네임을 입력해 주세요');
+      alertTextTimer('닉네임을 입력해 주세요');
       focusName.current.focus();
       return;
     } else if (!email) {
-      setAlertText('이메일을 입력해 주세요');
+      alertTextTimer('이메일을 입력해 주세요');
       focusEmail.current.focus();
       return;
     } else if (email.indexOf('@') == -1) {
-      setAlertText('이메일 형식이 아닙니다.');
+      alertTextTimer('이메일 형식이 아닙니다.');
       focusEmail.current.focus();
     } else if (!password) {
-      setAlertText('비밀번호를 입력해 주세요');
+      alertTextTimer('비밀번호를 입력해 주세요');
       focusPw.current.focus();
       return;
     } else if (!passwordCheck) {
-      setAlertText('비밀번호 재입력 입력해 주세요');
+      alertTextTimer('비밀번호 재입력 입력해 주세요');
       focusPwCheck.current.focus();
       return;
     } else if (password.length < 6) {
-      setAlertText('비밀번호는 6자리 이상 입력해주세요!');
+      alertTextTimer('비밀번호는 6자리 이상 입력해주세요!');
       focusPw.current.focus();
     } else if (password !== passwordCheck) {
-      setAlertText('비밀번호를 다시 확인해 주세요');
+      alertTextTimer('비밀번호를 다시 확인해 주세요');
       focusPwCheck.current.focus();
       return;
     }
@@ -64,24 +69,32 @@ export default function Register() {
             console.log('🚀 Profile updated!', userCredential);
           })
           .catch((error) => {
-            Alert.alert('🚨', error);
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            Alert.alert('🚨: update profile error', errorCode, errorMessage);
           });
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        if (errorMessage.includes('email-already-in-use')) {
+          Alert.alert('🚨', '이미 가입된 이메일입니다.');
+          focusEmail.current.focus();
+          return;
+        }
         Alert.alert('🚨', errorCode, errorMessage);
       });
   };
   return (
     <ContainerView>
       <KeyboardAwareScrollView
-        keyboardShouldPersistTaps="always"
+        extraScrollHeight={150}
+        // keyboardShouldPersistTaps="always"
         style={{ paddingHorizontal: 30 }}
       >
         <AuthRegisterContainerView>
           <Text style={{ color: 'red', height: 20 }}>{alertText}</Text>
-          <SectionView>
+          <View>
             <TitleText>닉네임</TitleText>
             <InputBox
               value={displayName}
@@ -89,9 +102,9 @@ export default function Register() {
               placeholder="User Name"
               ref={focusName}
             />
-          </SectionView>
+          </View>
 
-          <SectionView>
+          <View>
             <TitleText>이메일</TitleText>
             <InputBox
               value={email}
@@ -99,24 +112,31 @@ export default function Register() {
               placeholder="예)id@domain.com"
               ref={focusEmail}
             />
-          </SectionView>
+          </View>
 
-          <SectionView>
+          <View>
             <TitleText>비밀번호</TitleText>
             <InputBox
               value={password}
               onChangeText={setPassword}
               placeholder="Password"
               ref={focusPw}
-              type="password"
+              // 배포시 활성화
+              // autoComplete="password"
+              // textContentType="password"
+              // secureTextEntry={true}
             />
             <InputBox
               value={passwordCheck}
               onChangeText={setPasswordCheck}
               placeholder="Password check"
               ref={focusPwCheck}
+              // 배포시 활성화
+              // autoComplete="password"
+              // textContentType="password"
+              // secureTextEntry={true}
             />
-          </SectionView>
+          </View>
 
           <Buttons onPress={() => onSubmitRegister()}>
             <ButtonsText>회원가입</ButtonsText>
@@ -133,6 +153,7 @@ const ContainerView = styled.View`
   align-items: center;
 `;
 const AuthRegisterContainerView = styled.View`
+  flex: 1;
   width: 340px;
   background-color: #c7f5dd;
   box-shadow: 1px 4px 4px #808080;
@@ -140,7 +161,6 @@ const AuthRegisterContainerView = styled.View`
   padding: 10%;
   padding-bottom: 20%;
 `;
-const SectionView = styled.View``;
 const TitleText = styled.Text`
   font-size: 24px;
   font-weight: bold;
