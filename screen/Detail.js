@@ -19,7 +19,7 @@ import { dbService } from '../firebase';
 export default function Detail({
   navigation: { navigate },
   route: {
-    params: { postId },
+    params: { id },
   },
 }) {
   const [category, setCategory] = useState('');
@@ -32,39 +32,45 @@ export default function Detail({
 
   console.log(word);
   // get해오는부분
+  const getWord = async () => {
+    const snapshot = await getDoc(doc(dbService, 'Words', id));
+    const data = snapshot.data(); // 가져온 doc의 객체 내용
+    setWord(data);
+    console.log(snapshot.data());
+  };
+
   useEffect(() => {
-    const getWord = async () => {
-      const snapshot = await getDoc(doc(dbService, 'Words', postId));
-      const data = snapshot.data(); // 가져온 doc의 객체 내용
-      const postID = snapshot.id; // 가져온 doc의 id
-      setWord(data);
-      console.log(snapshot.data());
-    };
     getWord();
+    return (word.isEdit = false);
   }, []);
 
-  
   // 누르면 isEdit이 true/false로 변경됨
-  const setEdit = async (id) => {
+  const setEdit = async () => {
     await updateDoc(doc(dbService, 'Words', id), {
       isEdit: !word.isEdit,
     });
+    getWord();
   };
 
   // 완료 누르면 글 수정 완료
-  const editPost = async (id) => {
+  const editPost = async () => {
     await updateDoc(doc(dbService, 'Words', id), {
       mean: editMean,
       word: editWord,
       tmi: editTmi,
       isEdit: false,
     });
+    getWord();
   };
-
+  // reset 사용해서 변경된 상세페이지로 가게끔 해야함.  reset을 안쓰면 뒤로기가 되는데 그러면 이상해짐
+  console.log('editMean', editMean);
+  console.log('editWord', editWord);
+  console.log('editTmi', editTmi);
   return (
     <KeyboardAwareScrollView>
-      <View key={word.id}>
+      <View key={id}>
         {word.isEdit ? (
+          // isEdit이 true 일 때 보여지는 화면
           <>
             <Section>
               <Title>단어(수정)</Title>
@@ -91,8 +97,17 @@ export default function Detail({
                 />
               </TextBox>
             </Section>
+            <ButtonBox>
+              <Btn onPress={editPost}>
+                <Text>등록</Text>
+              </Btn>
+              <Btn onPress={() => {}}>
+                <Text></Text>
+              </Btn>
+            </ButtonBox>
           </>
         ) : (
+          // isEdit이 false 일 때 보여지는 화면
           <>
             <Section>
               <Title>단어</Title>
@@ -106,27 +121,22 @@ export default function Detail({
                 <Text>{word.mean}</Text>
               </TextBox>
             </Section>
-
             <Section>
               <Title>TMI</Title>
               <TextBox>
                 <Text>{word.tmi}</Text>
               </TextBox>
             </Section>
+            <ButtonBox>
+              <Btn onPress={setEdit}>
+                <Text>수정</Text>
+              </Btn>
+              <Btn onPress={() => {}}>
+                <Text>삭제</Text>
+              </Btn>
+            </ButtonBox>
           </>
         )}
-        <ButtonBox>
-          <Btn
-            onPress={() => {
-              word.isEdit ? editPost(word.id) : setEdit(word.id);
-            }}
-          >
-            <Text>{word.isEdit ? '등록' : '수정'}</Text>
-          </Btn>
-          <Btn onPress={() => {}}>
-            <Text>{word.isEdit ? '' : '삭제'}</Text>
-          </Btn>
-        </ButtonBox>
       </View>
     </KeyboardAwareScrollView>
   );
