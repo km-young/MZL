@@ -17,6 +17,7 @@ export default function Tabs() {
   const isDark = useColorScheme() === 'dark';
   return (
     <Tab.Navigator
+      initialRouteName={'Home'}
       screenOptions={{
         tabBarLabelPosition: 'below-icon',
         tabBarActiveTintColor: isDark ? 'white' : 'black',
@@ -50,7 +51,7 @@ export default function Tabs() {
       />
       <Tab.Screen
         options={{
-          title: 'MY word',
+          title: 'MZ Language',
           tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (
             <Entypo name="home" size={size} color={color} />

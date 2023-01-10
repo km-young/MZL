@@ -31,29 +31,31 @@ export default function Register({ navigation: { navigate, reset } }) {
     if (!displayName) {
       alertTextTimer('닉네임을 입력해 주세요');
       focusName.current.focus();
-      return;
+      return true;
     } else if (!email) {
       alertTextTimer('이메일을 입력해 주세요');
       focusEmail.current.focus();
-      return;
+      return true;
     } else if (email.indexOf('@') == -1) {
       alertTextTimer('이메일 형식이 아닙니다.');
       focusEmail.current.focus();
+      return true;
     } else if (!password) {
       alertTextTimer('비밀번호를 입력해 주세요');
       focusPw.current.focus();
-      return;
+      return true;
     } else if (!passwordCheck) {
       alertTextTimer('비밀번호 재입력 입력해 주세요');
       focusPwCheck.current.focus();
-      return;
+      return true;
     } else if (password.length < 6) {
       alertTextTimer('비밀번호는 6자리 이상 입력해주세요!');
       focusPw.current.focus();
+      return true;
     } else if (password !== passwordCheck) {
       alertTextTimer('비밀번호를 다시 확인해 주세요');
       focusPwCheck.current.focus();
-      return;
+      return true;
     }
   };
 
@@ -113,6 +115,7 @@ export default function Register({ navigation: { navigate, reset } }) {
               onChangeText={setDisplayName}
               placeholder="User Name"
               ref={focusName}
+              onSubmitEditing={() => focusEmail.current.focus()}
             />
           </View>
 
@@ -123,6 +126,7 @@ export default function Register({ navigation: { navigate, reset } }) {
               onChangeText={setEmail}
               placeholder="예)id@domain.com"
               ref={focusEmail}
+              onSubmitEditing={() => focusPw.current.focus()}
             />
           </View>
 
@@ -133,6 +137,7 @@ export default function Register({ navigation: { navigate, reset } }) {
               onChangeText={setPassword}
               placeholder="Password"
               ref={focusPw}
+              onSubmitEditing={() => focusPwCheck.current.focus()}
               // 배포시 활성화
               // autoComplete="password"
               // textContentType="password"
@@ -143,6 +148,7 @@ export default function Register({ navigation: { navigate, reset } }) {
               onChangeText={setPasswordCheck}
               placeholder="Password check"
               ref={focusPwCheck}
+              onSubmitEditing={() => onSubmitRegister()}
               // 배포시 활성화
               // autoComplete="password"
               // textContentType="password"
