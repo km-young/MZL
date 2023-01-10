@@ -26,22 +26,24 @@ export default function Detail({
   const [posts, setPosts] = useState([]);
   const [word, setWord] = useState({});
 
-  const [editMean, SetEditMean] = useState('');
-  const [editWord, SetEditWord] = useState('');
-  const [editTmi, SetEditTmi] = useState('');
+  const [editMean, setEditMean] = useState('');
+  const [editWord, setEditWord] = useState('');
+  const [editTmi, setEditTmi] = useState('');
 
-  console.log(word);
   // get해오는부분
   const getWord = async () => {
     const snapshot = await getDoc(doc(dbService, 'Words', id));
     const data = snapshot.data(); // 가져온 doc의 객체 내용
+    // 아무것도 수정입력 안하고 수정완료 시 데이터 없어지는 현상을 막기위해 setEdit state 여기에 추가함.
+    setEditMean(data.mean);
+    setEditTmi(data.tmi);
+    setEditWord(data.word);
     setWord(data);
-    console.log(snapshot.data());
+    console.log(data)
   };
 
   useEffect(() => {
     getWord();
-    return (word.isEdit = false);
   }, []);
 
   // 누르면 isEdit이 true/false로 변경됨
@@ -53,17 +55,26 @@ export default function Detail({
   };
 
   // 완료 누르면 글 수정 완료
+  // 유효성검사 추가, tmi는 공란이여도 괜찮을 것 같아서 mean,word에만 적용
   const editPost = async () => {
-    await updateDoc(doc(dbService, 'Words', id), {
-      mean: editMean,
-      word: editWord,
-      tmi: editTmi,
-      isEdit: false,
-    });
-    getWord();
+    if (editMean !== '' && editWord !== '') { 
+      await updateDoc(doc(dbService, 'Words', id), {
+        mean: editMean,
+        word: editWord,
+        tmi: editTmi,
+        isEdit: false,
+      });
+      getWord();
+    } else {
+      return;
+    }
   };
+
+  // 유효성검사 에러메세지 출력을 위해 변수 생성
+  const errCheck = editMean === '' || editWord === '';
+
   // reset 사용해서 변경된 상세페이지로 가게끔 해야함.  reset을 안쓰면 뒤로기가 되는데 그러면 이상해짐
-  console.log('editMean', editMean);
+  console.log('editMean', Boolean(editMean));
   console.log('editWord', editWord);
   console.log('editTmi', editTmi);
   return (
@@ -75,14 +86,14 @@ export default function Detail({
             <Section>
               <Title>단어(수정)</Title>
               <TextBox background="#C2E1FF">
-                <InputBox onChangeText={SetEditWord} defaultValue={word.word} />
+                <InputBox onChangeText={setEditWord} defaultValue={word.word} />
               </TextBox>
             </Section>
 
             <Section>
               <Title>의미(수정)</Title>
               <TextBox background="#C2E1FF">
-                <InputBox onChangeText={SetEditMean} defaultValue={word.mean} />
+                <InputBox onChangeText={setEditMean} defaultValue={word.mean} />
               </TextBox>
             </Section>
 
@@ -90,13 +101,15 @@ export default function Detail({
               <Title>TMI(수정)</Title>
               <TextBox background="#C2E1FF">
                 <InputBox
-                  onChangeText={SetEditTmi}
+                  onChangeText={setEditTmi}
                   defaultValue={word.tmi}
                   multiline={true}
                   numberOfLines={10}
                 />
               </TextBox>
             </Section>
+            {/* 유효성검사 에러메세지 */}
+            <ErrText>{errCheck ? '단어와 의미를 입력해주세요.' : ''}</ErrText>
             <ButtonBox>
               <Btn onPress={editPost}>
                 <Text>등록</Text>
@@ -142,6 +155,10 @@ export default function Detail({
   );
 }
 
+const ErrText = styled.Text`
+  color: red;
+  text-align: center;
+`;
 const Section = styled.View`
   flex: 1;
   padding: 40px;
