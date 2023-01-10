@@ -1,33 +1,29 @@
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import React, { useCallback, useState } from 'react';
 import {
   onSnapshot,
   query,
   collection,
-  doc,
   orderBy,
-  addDoc,
-  getDoc,
-  getDocs,
-  updateDoc,
-  deleteDoc,
   where,
 } from 'firebase/firestore';
 import { auth, dbService } from '../firebase';
-import styled from '@emotion/native';
-import { BLUE_COLOR, YELLOW_COLOR } from '../common/colors';
 import { updateProfile } from 'firebase/auth';
+import styled from '@emotion/native';
+import {
+  PINK_COLOR,
+  BLUE_COLOR,
+  YELLOW_COLOR,
+  GREEN_COLOR,
+} from '../common/colors';
 
 export default function My({ navigation: { navigate, reset } }) {
-  const displayName = auth.currentUser.displayName;
+  const displayName = auth.currentUser?.displayName;
+  const uid = auth.currentUser?.uid;
 
   const [words, setWords] = useState([]);
   const [onEdit, setEdit] = useState(false);
   const [editText, setEditText] = useState(displayName);
-
-  console.log(editText);
-  // const uid = auth.currentUser?.uid;
 
   useFocusEffect(
     useCallback(() => {
@@ -40,40 +36,45 @@ export default function My({ navigation: { navigate, reset } }) {
           ],
         });
       }
+      console.log(uid);
+      const q = query(
+        collection(dbService, 'Words'),
+        orderBy('createdAt', 'desc'),
+        where('userid', '==', uid),
+      );
+      const myPosts = onSnapshot(q, (post) => {
+        const myPost = post.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setWords(myPost);
+      });
+      console.log('data', words);
+      return myPosts;
     }, []),
   );
 
-  // useEffect(() => {
-  //   const q = query(
-  //     collection(dbService, 'Words'),
-  //     orderBy('createdAt', 'desc'),
-  //     where('userid', '==', uid ?? ''),
-  //   );
-
-  //   const myWords = onSnapshot(q, (snapshot) => {
-  //     const newWords = snapshot.docs.map((doc) => ({
-  //       id: doc.id,
-  //       ...doc.data(),
-  //     }));
-  //     setWords(newWords);
-  //   });
-  //   return myWords;
-  // }, []);
-
-  // console.log('auth', auth.currentUser?.uid);
   const onPressUpdate = () => {
+    /* 수정 버튼 */
     setEdit(!onEdit);
-    console.log('수정버튼', onEdit);
   };
+
   const onSubmitEdit = async () => {
-    console.log('submit 완료');
+    /* (수정)완료 버튼 */
     await updateProfile(auth.currentUser, {
       displayName: editText,
     });
     setEdit(!onEdit);
   };
+
   const onPressLogout = () => {
-    console.log('로그아웃');
+    /* 로그아웃 버튼 */
+    auth.signOut();
+    // Home 화면으로 이동
+    reset({
+      index: 0,
+      routes: [{ name: 'Tabs', params: { screen: 'Home' } }],
+    });
   };
 
   return (
@@ -107,9 +108,39 @@ export default function My({ navigation: { navigate, reset } }) {
       <MyWordsColumn>
         {words.map((item) => {
           return (
-            <View key={item.id} style={{ backgroundColor: 'red' }}>
-              <Text>{item.word}</Text>
-            </View>
+            <CardList
+              style={{
+                backgroundColor:
+                  item.category === 'korean'
+                    ? PINK_COLOR
+                    : item.category === 'english'
+                    ? GREEN_COLOR
+                    : item.category === 'chinese'
+                    ? YELLOW_COLOR
+                    : 'transparent',
+              }}
+              key={item.id}
+              onPress={() => {
+                navigate('Stacks', {
+                  screen: 'Detail',
+                  params: { id: item.id },
+                });
+              }}
+            >
+              <TextBox>{item.mean}</TextBox>
+              <CardBorder
+                style={{
+                  borderColor:
+                    item.category === 'korean'
+                      ? '#F2AEB4'
+                      : item.category === 'english'
+                      ? '#46D989'
+                      : item.category === 'chinese'
+                      ? '#FFC818'
+                      : 'transparent',
+                }}
+              ></CardBorder>
+            </CardList>
           );
         })}
       </MyWordsColumn>
@@ -166,4 +197,30 @@ const Title = styled.Text`
   font-size: 18px;
   font-weight: bold;
   margin: 30px 0 10px;
+`;
+
+const TextBox = styled.Text`
+  font-size: 25px;
+  font-weight: 800;
+`;
+
+const CardList = styled.TouchableOpacity`
+  position: relative;
+  background-color: ${PINK_COLOR};
+  box-shadow: 2px 2px 2px #555;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  width: 330px;
+  height: 70px;
+  margin: 10px;
+`;
+const CardBorder = styled.View`
+  position: absolute;
+  width: 330px;
+  height: 70px;
+  border: 1px solid #f2aeb4;
+  top: 10px;
+  left: 10px;
 `;
