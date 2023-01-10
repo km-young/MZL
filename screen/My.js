@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import {
   onSnapshot,
   query,
@@ -17,60 +17,89 @@ import {
 import { auth, dbService } from '../firebase';
 import styled from '@emotion/native';
 import { BLUE_COLOR, YELLOW_COLOR } from '../common/colors';
+import { updateProfile } from 'firebase/auth';
 
 export default function My({ navigation: { navigate, reset } }) {
-  const [words, setWords] = useState([]);
-  const displayName = auth.currentUser?.displayName;
-  const uid = auth.currentUser?.uid;
+  const displayName = auth.currentUser.displayName;
 
-  //   useFocusEffect(
-  //     useCallback(() => {
-  //       const q = query(
-  //         collection(dbService, 'Words'),
-  //         orderBy('createdAt', 'desc'),
-  //         where('userid', '==', auth.currentUser?.uid ?? ''),
-  //       );
-  //       const myWords = onSnapshot(q, (snapshot) => {
-  //         const newWords = snapshot.docs.map((doc) => ({
-  //           id: doc.id,
-  //           ...doc.data(),
-  //         }));
-  //         setWords(newWords);
-  //       });
-  //       return myWords;
-  //     }, []),
+  const [words, setWords] = useState([]);
+  const [onEdit, setEdit] = useState(false);
+  const [editText, setEditText] = useState(displayName);
+
+  console.log(editText);
+  // const uid = auth.currentUser?.uid;
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!auth.currentUser) {
+        reset({
+          index: 1,
+          routes: [
+            { name: 'Tabs', params: { screen: 'Home' } },
+            { name: 'Stacks', params: { screen: 'Login' } },
+          ],
+        });
+      }
+    }, []),
+  );
+
+  // useEffect(() => {
+  //   const q = query(
+  //     collection(dbService, 'Words'),
+  //     orderBy('createdAt', 'desc'),
+  //     where('userid', '==', uid ?? ''),
   //   );
 
-  useEffect(() => {
-    const q = query(
-      collection(dbService, 'Words'),
-      orderBy('createdAt', 'desc'),
-      where('userid', '==', uid ?? ''),
-    );
+  //   const myWords = onSnapshot(q, (snapshot) => {
+  //     const newWords = snapshot.docs.map((doc) => ({
+  //       id: doc.id,
+  //       ...doc.data(),
+  //     }));
+  //     setWords(newWords);
+  //   });
+  //   return myWords;
+  // }, []);
 
-    const myWords = onSnapshot(q, (snapshot) => {
-      const newWords = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setWords(newWords);
+  // console.log('auth', auth.currentUser?.uid);
+  const onPressUpdate = () => {
+    setEdit(!onEdit);
+    console.log('수정버튼', onEdit);
+  };
+  const onSubmitEdit = async () => {
+    console.log('submit 완료');
+    await updateProfile(auth.currentUser, {
+      displayName: editText,
     });
-    return myWords;
-  }, []);
-
-  console.log('auth', auth.currentUser?.uid);
+    setEdit(!onEdit);
+  };
+  const onPressLogout = () => {
+    console.log('로그아웃');
+  };
 
   return (
     <Container>
       <UserColumn>
         {/* API 불러오기 */}
         <UserProfile>
-          <UserNickname>{displayName}</UserNickname>
-          <UserEditBtn>
-            <UerEditBtnText>수정</UerEditBtnText>
-          </UserEditBtn>
+          {onEdit ? (
+            <UserNicknameInput
+              value={editText}
+              onChangeText={setEditText}
+            ></UserNicknameInput>
+          ) : (
+            <UserNickname>{displayName}</UserNickname>
+          )}
+          {onEdit ? (
+            <UserSuccessBtn onPress={() => onSubmitEdit()}>
+              <UerEditBtnText>완료</UerEditBtnText>
+            </UserSuccessBtn>
+          ) : (
+            <UserEditBtn onPress={() => onPressUpdate()}>
+              <UerEditBtnText>수정</UerEditBtnText>
+            </UserEditBtn>
+          )}
         </UserProfile>
-        <LogoutBtn>
+        <LogoutBtn onPress={() => onPressLogout()}>
           <LogoutBtnText>LOGOUT</LogoutBtnText>
         </LogoutBtn>
       </UserColumn>
@@ -78,7 +107,7 @@ export default function My({ navigation: { navigate, reset } }) {
       <MyWordsColumn>
         {words.map((item) => {
           return (
-            <View key={item.id}>
+            <View key={item.id} style={{ backgroundColor: 'red' }}>
               <Text>{item.word}</Text>
             </View>
           );
@@ -105,6 +134,20 @@ const UserNickname = styled.Text`
   font-size: 18px;
   font-weight: bold;
   margin-right: 10px;
+  padding: 1% 5%;
+`;
+const UserNicknameInput = styled.TextInput`
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 10px;
+  padding: 1% 5%;
+  background-color: white;
+  border-bottom: 5px solid #000;
+  box-shadow: ${(props) => props.theme.boxShadow};
+`;
+const UserSuccessBtn = styled.TouchableOpacity`
+  padding: 5px;
+  background-color: ${YELLOW_COLOR};
 `;
 const UserEditBtn = styled.TouchableOpacity`
   padding: 5px;

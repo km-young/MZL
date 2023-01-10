@@ -6,7 +6,6 @@ import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { auth, dbService } from '../firebase';
 import { PINK_COLOR, GREEN_COLOR, YELLOW_COLOR } from '../common/colors';
 
-
 export default function Home() {
   const { navigate } = useNavigation();
   const [word, setWord] = useState([]);
@@ -32,11 +31,7 @@ export default function Home() {
       setWord(newWords);
     });
 
-    console.log(
-      auth.currentUser
-        ? ('로그인 상태', auth.currentUser.displayName)
-        : '로그아웃 상태',
-    );
+    // console.log(auth.currentUser ? '로그인 상태' : '로그아웃 상태');
   }, []);
 
   const filteredWord = word?.filter((item) => item.category === category);
