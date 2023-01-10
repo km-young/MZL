@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Login from '../screen/Login';
 import Home from '../screen/Home';
 import Post from '../screen/Post';
+import My from '../screen/My';
 // design import
 import { useColorScheme } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
@@ -23,7 +24,7 @@ export default function Tabs() {
         tabBarLabel: 'Home',
       }}
     >
-      <Tab.Screen
+      {/* <Tab.Screen
         options={{
           title: 'Login',
           headerTitleAlign: 'center',
@@ -34,6 +35,18 @@ export default function Tabs() {
         }}
         name="Login"
         component={Login}
+      /> */}
+      <Tab.Screen
+        options={{
+          title: 'MY',
+          headerTitleAlign: 'center',
+          tabBarLabel: 'MY',
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="user" size={size} color={color} />
+          ),
+        }}
+        name="My"
+        component={My}
       />
       <Tab.Screen
         options={{
