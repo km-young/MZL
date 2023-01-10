@@ -5,6 +5,7 @@ import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 
 import { auth, dbService } from '../firebase';
 import { PINK_COLOR, GREEN_COLOR, YELLOW_COLOR } from '../common/colors';
+import { FlatList } from 'react-native';
 
 export default function Home() {
   const { navigate } = useNavigation();
@@ -55,48 +56,53 @@ export default function Home() {
             </CategoryButton>
           ))}
         </CategoryContainer>
-        <ScrollView>
-          {/* //data */}
-          <CardListContainer>
-            <CardContainer>
-              {category
-                ? filteredWord.map((item) => {
-                    return (
-                      <CardList
-                        category={category}
-                        key={item.id}
-                        onPress={() => {
-                          navigate('Stacks', {
-                            screen: 'Detail',
-                            params: { id: item.id },
-                          });
-                        }}
-                      >
-                        <TextBox>{item.mean}</TextBox>
-                        <CardBorder category={category}></CardBorder>
-                      </CardList>
-                    );
-                  })
-                : word.map((item) => {
-                    return (
-                      <CardList
-                        category={item.category}
-                        key={item.id}
-                        onPress={() => {
-                          navigate('Stacks', {
-                            screen: 'Detail',
-                            params: { id: item.id },
-                          });
-                        }}
-                      >
-                        <TextBox>{item.mean}</TextBox>
-                        <CardBorder category={item.category}></CardBorder>
-                      </CardList>
-                    );
-                  })}
-            </CardContainer>
-          </CardListContainer>
-        </ScrollView>
+        <CardListContainer>
+          <CardContainer>
+            {category ? (
+              <FlatList
+                data={filteredWord}
+                renderItem={({ item }) => {
+                  return (
+                    <CardList
+                      category={category}
+                      onPress={() => {
+                        navigate('Stacks', {
+                          screen: 'Detail',
+                          params: { id: item.id },
+                        });
+                      }}
+                    >
+                      <TextBox>{item.mean}</TextBox>
+                      <CardBorder category={category}></CardBorder>
+                    </CardList>
+                  );
+                }}
+                keyExtractor={(item) => item.id}
+              />
+            ) : (
+              <FlatList
+                data={word}
+                renderItem={({ item }) => {
+                  return (
+                    <CardList
+                      category={item.category}
+                      onPress={() => {
+                        navigate('Stacks', {
+                          screen: 'Detail',
+                          params: { id: item.id },
+                        });
+                      }}
+                    >
+                      <TextBox>{item.mean}</TextBox>
+                      <CardBorder category={item.category}></CardBorder>
+                    </CardList>
+                  );
+                }}
+                keyExtractor={(item) => item.id}
+              />
+            )}
+          </CardContainer>
+        </CardListContainer>
       </HomeContainer>
     </>
   );
@@ -117,8 +123,6 @@ const CategoryContainer = styled.View`
 const CategoryButton = styled.TouchableOpacity`
   margin: 10px 40px 10px 40px;
 `;
-
-const ScrollView = styled.ScrollView``;
 
 const CardListContainer = styled.View`
   flex: 1;
