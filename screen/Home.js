@@ -5,7 +5,7 @@ import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 
 import { auth, dbService } from '../firebase';
 import { PINK_COLOR, GREEN_COLOR, YELLOW_COLOR } from '../common/colors';
-
+import { FlatList } from 'react-native';
 
 export default function Home() {
   const { navigate } = useNavigation();
@@ -56,88 +56,53 @@ export default function Home() {
             </CategoryButton>
           ))}
         </CategoryContainer>
-        <ScrollView>
-          {/* //data */}
-          <CardListContainer>
-            <CardContainer>
-              {category
-                ? filteredWord.map((item) => {
-                    return (
-                      <CardList
-                        style={{
-                          backgroundColor:
-                            item.category === 'korean'
-                              ? PINK_COLOR
-                              : item.category === 'english'
-                              ? GREEN_COLOR
-                              : item.category === 'chinese'
-                              ? YELLOW_COLOR
-                              : 'transparent',
-                        }}
-                        key={item.id}
-                        onPress={() => {
-                          navigate('Stacks', {
-                            screen: 'Detail',
-                            params: { id: item.id },
-                          });
-                        }}
-                      >
-                        <TextBox>{item.mean}</TextBox>
-                        <CardBorder
-                          style={{
-                            borderColor:
-                              item.category === 'korean'
-                                ? '#F2AEB4'
-                                : item.category === 'english'
-                                ? '#46D989'
-                                : item.category === 'chinese'
-                                ? '#FFC818'
-                                : 'transparent',
-                          }}
-                        ></CardBorder>
-                      </CardList>
-                    );
-                  })
-                : word.map((item) => {
-                    return (
-                      <CardList
-                        style={{
-                          backgroundColor:
-                            item.category === 'korean'
-                              ? PINK_COLOR
-                              : item.category === 'english'
-                              ? GREEN_COLOR
-                              : item.category === 'chinese'
-                              ? YELLOW_COLOR
-                              : 'transparent',
-                        }}
-                        key={item.id}
-                        onPress={() => {
-                          navigate('Stacks', {
-                            screen: 'Detail',
-                            params: { id: item.id },
-                          });
-                        }}
-                      >
-                        <TextBox>{item.mean}</TextBox>
-                        <CardBorder
-                          style={{
-                            borderColor:
-                              item.category === 'korean'
-                                ? '#F2AEB4'
-                                : item.category === 'english'
-                                ? '#46D989'
-                                : item.category === 'chinese'
-                                ? '#FFC818'
-                                : 'transparent',
-                          }}
-                        ></CardBorder>
-                      </CardList>
-                    );
-                  })}
-            </CardContainer>
-          </CardListContainer>
-        </ScrollView>
+        <CardListContainer>
+          <CardContainer>
+            {category ? (
+              <FlatList
+                data={filteredWord}
+                renderItem={({ item }) => {
+                  return (
+                    <CardList
+                      category={category}
+                      onPress={() => {
+                        navigate('Stacks', {
+                          screen: 'Detail',
+                          params: { id: item.id },
+                        });
+                      }}
+                    >
+                      <TextBox>{item.mean}</TextBox>
+                      <CardBorder category={category}></CardBorder>
+                    </CardList>
+                  );
+                }}
+                keyExtractor={(item) => item.id}
+              />
+            ) : (
+              <FlatList
+                data={word}
+                renderItem={({ item }) => {
+                  return (
+                    <CardList
+                      category={item.category}
+                      onPress={() => {
+                        navigate('Stacks', {
+                          screen: 'Detail',
+                          params: { id: item.id },
+                        });
+                      }}
+                    >
+                      <TextBox>{item.mean}</TextBox>
+                      <CardBorder category={item.category}></CardBorder>
+                    </CardList>
+                  );
+                }}
+                keyExtractor={(item) => item.id}
+              />
+            )}
+          </CardContainer>
+        </CardListContainer>
       </HomeContainer>
     </>
   );
@@ -159,8 +124,6 @@ const CategoryButton = styled.TouchableOpacity`
   margin: 10px 40px 10px 40px;
 `;
 
-const ScrollView = styled.ScrollView``;
-
 const CardListContainer = styled.View`
   flex: 1;
   align-items: center;
@@ -173,7 +136,15 @@ const TextBox = styled.Text`
 
 const CardList = styled.TouchableOpacity`
   position: relative;
-  background-color: ${PINK_COLOR};
+  background-color: ${(props) => {
+    return props.category === 'korean'
+      ? PINK_COLOR
+      : props.category === 'english'
+      ? GREEN_COLOR
+      : props.category === 'chinese'
+      ? YELLOW_COLOR
+      : 'transparent';
+  }};
   box-shadow: 2px 2px 2px #555;
   align-items: flex-start;
   justify-content: flex-end;
@@ -188,7 +159,16 @@ const CardBorder = styled.View`
   position: absolute;
   width: 350px;
   height: 70px;
-  border: 1px solid #f2aeb4;
+  border: 1px solid;
+  border-color: ${(props) => {
+    return props.category === 'korean'
+      ? '#F2AEB4'
+      : props.category === 'english'
+      ? '#46D989'
+      : props.category === 'chinese'
+      ? '#FFC818'
+      : 'transparent';
+  }};
   top: 10px;
   left: 10px;
 `;
