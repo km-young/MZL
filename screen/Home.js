@@ -80,7 +80,7 @@ export default function Home() {
                 : word.map((item) => {
                     return (
                       <CardList
-                        category={category}
+                        category={item.category}
                         key={item.id}
                         onPress={() => {
                           navigate('Stacks', {
@@ -90,7 +90,7 @@ export default function Home() {
                         }}
                       >
                         <TextBox>{item.mean}</TextBox>
-                        <CardBorder category={category}></CardBorder>
+                        <CardBorder category={item.category}></CardBorder>
                       </CardList>
                     );
                   })}
