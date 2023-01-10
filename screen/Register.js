@@ -27,8 +27,7 @@ export default function Register({ navigation: { navigate, reset } }) {
     setTimeout(() => setAlertText(''), 3000);
   };
 
-  const onSubmitRegister = async () => {
-    // 유효성 검사 진행
+  const textConfirm = () => {
     if (!displayName) {
       alertTextTimer('닉네임을 입력해 주세요');
       focusName.current.focus();
@@ -56,19 +55,32 @@ export default function Register({ navigation: { navigate, reset } }) {
       focusPwCheck.current.focus();
       return;
     }
+  };
+
+  const onSubmitRegister = async () => {
+    // 유효성 검사 진행
+    if (textConfirm()) {
+      return;
+    }
+    // Firebase : authentication API
     await createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
-        console.log('🚀 userCredential', userCredential);
         const user = userCredential.user;
         // update 닉네임
         await updateProfile(auth.currentUser, {
           displayName,
         })
           .then(() => {
-            reset({
-              index: 0,
-              routes: [{ name: 'Tabs', params: { screen: 'Home' } }],
-            });
+            Alert.alert('🎉회원가입 성공', `${user.displayName}님 환영합니다`, [
+              {
+                text: 'OK',
+                onPress: () =>
+                  reset({
+                    index: 0,
+                    routes: [{ name: 'Tabs', params: { screen: 'Home' } }],
+                  }),
+              },
+            ]);
           })
           .catch((error) => {
             const errorCode = error.code;
@@ -80,18 +92,16 @@ export default function Register({ navigation: { navigate, reset } }) {
         const errorCode = error.code;
         const errorMessage = error.message;
         if (errorMessage.includes('email-already-in-use')) {
-          alertTextTimer('🚨', '이미 가입된 이메일입니다.');
+          alertTextTimer('🚨: 이미 가입된 이메일입니다.');
           focusEmail.current.focus();
           return;
         }
-        alertTextTimer('🚨', errorCode, errorMessage);
       });
   };
   return (
     <ContainerView>
       <KeyboardAwareScrollView
         extraScrollHeight={150}
-        // keyboardShouldPersistTaps="always"
         style={{ paddingHorizontal: 30 }}
       >
         <AuthRegisterContainerView>

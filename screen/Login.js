@@ -4,7 +4,7 @@ import styled from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
-import { Text } from 'react-native';
+import { Alert, Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function Login({ navigation: { navigate, reset } }) {
@@ -24,9 +24,7 @@ export default function Login({ navigation: { navigate, reset } }) {
     setTimeout(() => setAlertText(''), 3000);
   };
 
-  // LOGIN API
-  const onSubmitLogin = () => {
-    // 유효성 검사 진행
+  const textConfirm = () => {
     if (!email) {
       focusEmail.current.focus();
       alertTextTimer('이메일을 입력해 주세요');
@@ -43,27 +41,33 @@ export default function Login({ navigation: { navigate, reset } }) {
       focusPw.current.focus();
       return;
     }
+  };
 
+  // LOGIN API
+  const onSubmitLogin = () => {
+    // 유효성 검사 진행
+    if (textConfirm()) {
+      return;
+    }
     // Firebase : authentication API
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        reset({
-          index: 0,
-          routes: [
-            {
-              name: 'Tabs',
-              params: {
-                screen: 'Home',
-              },
-            },
-          ],
-        });
+        Alert.alert('🎉로그인 성공', `${user.displayName}님 환영합니다`, [
+          {
+            text: 'OK',
+            onPress: () =>
+              reset({
+                index: 0,
+                routes: [{ name: 'Tabs', params: { screen: 'Home' } }],
+              }),
+          },
+        ]);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log('errorMessage:', errorMessage);
+        console.log('errorMessage:', errorCode, errorMessage);
         if (errorMessage.includes('user-not-found')) {
           alertTextTimer('가입되지 않은 회원입니다.');
           return;
