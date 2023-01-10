@@ -59,30 +59,21 @@ export default function Register({ navigation: { navigate, reset } }) {
     await createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         console.log('🚀 userCredential', userCredential);
-        // Signed in
         const user = userCredential.user;
-        // 닉네임 추가
+        // update 닉네임
         await updateProfile(auth.currentUser, {
           displayName,
         })
           .then(() => {
-            console.log('🚀 Profile updated!', userCredential);
             reset({
               index: 0,
-              routes: [
-                {
-                  name: 'Tabs',
-                  params: {
-                    screen: 'Home',
-                  },
-                },
-              ],
+              routes: [{ name: 'Tabs', params: { screen: 'Home' } }],
             });
           })
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            Alert.alert('🚨: update profile error', errorCode, errorMessage);
+            alertTextTimer('🚨: update profile error', errorCode, errorMessage);
           });
       })
       .catch((error) => {
@@ -93,7 +84,7 @@ export default function Register({ navigation: { navigate, reset } }) {
           focusEmail.current.focus();
           return;
         }
-        Alert.alert('🚨', errorCode, errorMessage);
+        alertTextTimer('🚨', errorCode, errorMessage);
       });
   };
   return (
