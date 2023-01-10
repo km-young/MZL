@@ -28,18 +28,19 @@ export default function Login({ navigation: { navigate, reset } }) {
     if (!email) {
       focusEmail.current.focus();
       alertTextTimer('이메일을 입력해 주세요');
-      return;
+      return true;
     } else if (email.indexOf('@') == -1) {
       alertTextTimer('이메일 형식이 아닙니다.');
       focusEmail.current.focus();
+      return true;
     } else if (!password) {
       alertTextTimer('비밀번호를 입력해 주세요');
       focusPw.current.focus();
-      return;
+      return true;
     } else if (password.length < 6) {
       alertTextTimer('비밀번호는 6자리 이상 입력해주세요!');
       focusPw.current.focus();
-      return;
+      return true;
     }
   };
 
