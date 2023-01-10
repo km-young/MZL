@@ -4,6 +4,7 @@ import { Text, TouchableOpacity } from 'react-native';
 import Detail from '../screen/Detail';
 import Register from '../screen/Register';
 import Home from '../screen/Home';
+import Login from '../screen/Login';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ export default function Stacks({ navigation: { goBack } }) {
         ),
       }}
     >
+      <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Detail" component={Detail} />
       <Stack.Screen name="Register" component={Register} />
