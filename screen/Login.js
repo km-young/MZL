@@ -4,10 +4,11 @@ import styled from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
-import { Text } from 'react-native';
+import { Alert, Text } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-export default function Login() {
-  const { navigate } = useNavigation();
+export default function Login({ navigation: { navigate, reset } }) {
+  // const { navigate } = useNavigation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,9 +24,7 @@ export default function Login() {
     setTimeout(() => setAlertText(''), 3000);
   };
 
-  // LOGIN API
-  const onSubmitLogin = () => {
-    // 유효성 검사 진행
+  const textConfirm = () => {
     if (!email) {
       focusEmail.current.focus();
       alertTextTimer('이메일을 입력해 주세요');
@@ -42,17 +41,33 @@ export default function Login() {
       focusPw.current.focus();
       return;
     }
+  };
 
+  // LOGIN API
+  const onSubmitLogin = () => {
+    // 유효성 검사 진행
+    if (textConfirm()) {
+      return;
+    }
     // Firebase : authentication API
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        navigate('Stacks', { screen: 'Home', params: { test: 'test' } });
+        Alert.alert('🎉로그인 성공', `${user.displayName}님 환영합니다`, [
+          {
+            text: 'OK',
+            onPress: () =>
+              reset({
+                index: 0,
+                routes: [{ name: 'Tabs', params: { screen: 'Home' } }],
+              }),
+          },
+        ]);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log('errorMessage:', errorMessage);
+        console.log('errorMessage:', errorCode, errorMessage);
         if (errorMessage.includes('user-not-found')) {
           alertTextTimer('가입되지 않은 회원입니다.');
           return;
@@ -65,47 +80,55 @@ export default function Login() {
   return (
     <ContainerView>
       <StatusBar />
-      <AuthLoginContainerView>
-        <TitleText>회원 로그인</TitleText>
-        <Text style={{ color: 'red', height: 20 }}>{alertText}</Text>
-        <IDInput
-          value={email}
-          onChangeText={setEmail}
-          placeholder="E-MAIL"
-          ref={focusEmail}
-          onSubmitEditing={() => focusPw.current.focus()}
-        />
-        <PWInput
-          value={password}
-          onChangeText={setPassword}
-          placeholder="PW"
-          ref={focusPw}
-          onSubmitEditing={() => onSubmitLogin()}
-        />
-        <Buttons>
-          <ButtonsText onPress={() => onSubmitLogin()}>LOGIN</ButtonsText>
-        </Buttons>
-        <Buttons onPress={() => navigate('Stacks', { screen: 'Register' })}>
-          <ButtonsText>REGISTER</ButtonsText>
-        </Buttons>
-      </AuthLoginContainerView>
+      <KeyboardAwareScrollView
+        style={{ paddingHorizontal: 30 }}
+        extraScrollHeight={150}
+      >
+        <AuthLoginContainerView>
+          <TitleText>회원 로그인</TitleText>
+          <Text style={{ color: 'red', height: 20 }}>{alertText}</Text>
+          <IDInput
+            value={email}
+            onChangeText={setEmail}
+            placeholder="E-MAIL"
+            ref={focusEmail}
+            onSubmitEditing={() => focusPw.current.focus()}
+          />
+          <PWInput
+            value={password}
+            onChangeText={setPassword}
+            placeholder="PW"
+            ref={focusPw}
+            onSubmitEditing={() => onSubmitLogin()}
+            // autoComplete="password"
+            // textContentType="password"
+            // secureTextEntry={true}
+          />
+          <Buttons>
+            <ButtonsText onPress={() => onSubmitLogin()}>LOGIN</ButtonsText>
+          </Buttons>
+          <Buttons onPress={() => navigate('Stacks', { screen: 'Register' })}>
+            <ButtonsText>REGISTER</ButtonsText>
+          </Buttons>
+        </AuthLoginContainerView>
+      </KeyboardAwareScrollView>
     </ContainerView>
   );
 }
 
 const ContainerView = styled.View`
-  background-color: white;
-  height: 100%;
+  flex: 1;
   justify-content: center;
   align-items: center;
 `;
 const AuthLoginContainerView = styled.View`
   width: 340px;
-  height: 340px;
   background-color: #c7f5dd;
   box-shadow: 1px 4px 4px #808080;
   justify-content: center;
   align-items: center;
+  margin-top: 30%;
+  padding: 10%;
 `;
 const TitleText = styled.Text`
   font-size: 24px;
