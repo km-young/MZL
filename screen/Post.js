@@ -35,6 +35,7 @@ export default function Post({ navigation: { navigate, reset, setOptions } }) {
     setIsRefreshing(false);
   };
 
+  const { uid, displayName } = auth.currentUser;
   const newWord = {
     word,
     mean,
@@ -42,9 +43,10 @@ export default function Post({ navigation: { navigate, reset, setOptions } }) {
     category: value,
     // auth기능 구현 되면 아래 userid사용
     // userid: '',
-    userid: auth.currentUser?.uid,
+    userid: uid,
     isEdit: false,
     createdAt: Date.now(),
+    nickname: displayName,
   };
 
   const focusWord = useRef();
@@ -102,7 +104,7 @@ export default function Post({ navigation: { navigate, reset, setOptions } }) {
                 index: 0,
                 routes: [
                   {
-                    name: 'Tabs',
+                    name: 'Stacks',
                     params: {
                       screen: 'Login',
                     },
