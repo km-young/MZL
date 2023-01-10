@@ -1,22 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
 import styled from '@emotion/native';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { dbService } from '../firebase';
+import { PINK_COLOR, GREEN_COLOR, YELLOW_COLOR } from '../common/colors';
 
-import { PINK_COLOR } from '../common/colors';
-
-export default function Home({ postId }) {
+export default function Home() {
   const { navigate } = useNavigation();
-
   const [word, setWord] = useState([]);
-  const [category, setCategory] = useState([
-    { label: 'korean', value: 'korean' },
-    { label: 'english', value: 'english' },
-    { label: 'chinese', value: 'chinese' },
-  ]);
-
+  const [category, setCategory] = useState('');
   const [categoryList] = useState(['korean', 'english', 'chinese']);
 
   useEffect(() => {
@@ -39,9 +31,11 @@ export default function Home({ postId }) {
     });
   }, []);
 
+  const filteredWord = word?.filter((item) => item.category === category);
   return (
     <>
       <HomeContainer>
+        {/* //header // list header component */}
         <CategoryContainer>
           {categoryList.map((item) => (
             <CategoryButton
@@ -55,26 +49,84 @@ export default function Home({ postId }) {
           ))}
         </CategoryContainer>
         <ScrollView>
+          {/* //data */}
           <CardListContainer>
             <CardContainer>
-              {word.map((item) => {
-                if (item.category === category) {
-                  return (
-                    <CardList
-                      key={item.id}
-                      onPress={() => {
-                        navigate('Stacks', {
-                          screen: 'Detail',
-                          params: { id },
-                        });
-                      }}
-                    >
-                      <TextBox>{item.mean}</TextBox>
-                      <CardBorder></CardBorder>
-                    </CardList>
-                  );
-                }
-              })}
+              {category
+                ? filteredWord.map((item) => {
+                    return (
+                      <CardList
+                        style={{
+                          backgroundColor:
+                            item.category === 'korean'
+                              ? PINK_COLOR
+                              : item.category === 'english'
+                              ? GREEN_COLOR
+                              : item.category === 'chinese'
+                              ? YELLOW_COLOR
+                              : 'transparent',
+                        }}
+                        key={item.id}
+                        onPress={() => {
+                          navigate('Stacks', {
+                            screen: 'Detail',
+                            params: { id: item.id },
+                          });
+                        }}
+                      >
+                        <TextBox>{item.mean}</TextBox>
+                        <CardBorder
+                          style={{
+                            borderColor:
+                              item.category === 'korean'
+                                ? '#F2AEB4'
+                                : item.category === 'english'
+                                ? '#46D989'
+                                : item.category === 'chinese'
+                                ? '#FFC818'
+                                : 'transparent',
+                          }}
+                        ></CardBorder>
+                      </CardList>
+                    );
+                  })
+                : word.map((item) => {
+                    return (
+                      <CardList
+                        style={{
+                          backgroundColor:
+                            item.category === 'korean'
+                              ? PINK_COLOR
+                              : item.category === 'english'
+                              ? GREEN_COLOR
+                              : item.category === 'chinese'
+                              ? YELLOW_COLOR
+                              : 'transparent',
+                        }}
+                        key={item.id}
+                        onPress={() => {
+                          navigate('Stacks', {
+                            screen: 'Detail',
+                            params: { id: item.id },
+                          });
+                        }}
+                      >
+                        <TextBox>{item.mean}</TextBox>
+                        <CardBorder
+                          style={{
+                            borderColor:
+                              item.category === 'korean'
+                                ? '#F2AEB4'
+                                : item.category === 'english'
+                                ? '#46D989'
+                                : item.category === 'chinese'
+                                ? '#FFC818'
+                                : 'transparent',
+                          }}
+                        ></CardBorder>
+                      </CardList>
+                    );
+                  })}
             </CardContainer>
           </CardListContainer>
         </ScrollView>
