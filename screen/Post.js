@@ -71,13 +71,6 @@ export default function Post({ navigation: { navigate, reset, setOptions } }) {
           onPress: () => focusMean.current.focus(),
         },
       ]);
-    } else if (!tmi.trim() || tmi === null) {
-      Alert.alert('등록 불가', '공백이 있습니다!', [
-        {
-          text: 'OK',
-          onPress: () => focusTmi.current.focus(),
-        },
-      ]);
     } else if (!value || value === null) {
       Alert.alert('등록 불가', '카테고리를 선택해주새요!');
     } else {
