@@ -89,6 +89,10 @@ export default function Detail({
     <KeyboardAwareScrollView>
       <StatusBar />
       <View key={id}>
+        <NickName>
+          글쓴이 [ <NickNameText>{word.nickname}</NickNameText> ]
+        </NickName>
+
         <Section>
           <Title>단어</Title>
           <TextBox>
@@ -136,10 +140,20 @@ export default function Detail({
     </KeyboardAwareScrollView>
   );
 }
-
-const ErrText = styled.Text`
-  color: red;
+const NickName = styled.Text`
   text-align: center;
+  margin: 20px;
+  margin-bottom: 0;
+  font-size: 20px;
+  font-weight: bold;
+  box-shadow: 2px 2px 1px grey;
+  /* color: #a19262; */
+`;
+const NickNameText = styled.Text`
+  text-align: center;
+  margin: 20px;
+  font-size: 20px;
+  /* font-weight: 400; */
 `;
 const Section = styled.View`
   flex: 1;
