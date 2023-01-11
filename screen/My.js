@@ -148,6 +148,7 @@ const UserNickname = styled.Text`
   font-weight: bold;
   margin-right: 10px;
   padding: 1% 5%;
+  color: ${(props) => props.theme.title};
 `;
 const UserNicknameInput = styled.TextInput`
   font-size: 18px;
