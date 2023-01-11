@@ -5,6 +5,7 @@ import Detail from '../screen/Detail';
 import Register from '../screen/Register';
 import Home from '../screen/Home';
 import Login from '../screen/Login';
+import Edit from '../screen/Edit'
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,7 @@ export default function Stacks({ navigation: { goBack } }) {
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Detail" component={Detail} />
       <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="Edit" component={Edit} />
     </Stack.Navigator>
   );
 }
