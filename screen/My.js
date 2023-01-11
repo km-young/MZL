@@ -40,7 +40,7 @@ export default function My({ navigation: { navigate, reset } }) {
       const q = query(
         collection(dbService, 'Words'),
         orderBy('createdAt', 'desc'),
-        where('userid', '==', uid),
+        where('userid', '==', uid ?? ''),
       );
       const myPosts = onSnapshot(q, (post) => {
         const myPost = post.docs.map((doc) => ({
@@ -49,9 +49,8 @@ export default function My({ navigation: { navigate, reset } }) {
         }));
         setWords(myPost);
       });
-      console.log('data', words);
       return myPosts;
-    }, []),
+    }, [uid]),
   );
 
   const onPressUpdate = () => {

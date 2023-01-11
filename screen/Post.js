@@ -35,7 +35,9 @@ export default function Post({ navigation: { navigate, reset, setOptions } }) {
     setIsRefreshing(false);
   };
 
-  const { uid, displayName } = auth.currentUser;
+  const uid = auth.currentUser?.uid;
+  const displayName = auth.currentUser?.displayName;
+
   const newWord = {
     word,
     mean,
@@ -85,6 +87,8 @@ export default function Post({ navigation: { navigate, reset, setOptions } }) {
       setMean('');
       setTmi('');
       setValue(null);
+
+      navigate('Tabs', { screen: 'Home' });
     }
   };
 
@@ -101,8 +105,9 @@ export default function Post({ navigation: { navigate, reset, setOptions } }) {
             style: 'default',
             onPress: () =>
               reset({
-                index: 0,
+                index: 1,
                 routes: [
+                  { name: 'Tabs', params: { screen: 'Home' } },
                   {
                     name: 'Stacks',
                     params: {
