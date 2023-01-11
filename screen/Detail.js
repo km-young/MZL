@@ -50,6 +50,24 @@ export default function Detail({
     getWord();
   };
 
+  const delPost = async () => {
+    console.log('id', id);
+    Alert.alert('삭제', '정말로 삭제하시겠습니까??', [
+      { text: 'cancel', style: 'destructive' },
+      {
+        text: 'OK, Delete it.',
+        onPress: async () => {
+          try {
+            await deleteDoc(doc(dbService, 'Words', id));
+            navigate('Home');
+          } catch (err) {
+            console.log('err:', err);
+          }
+        },
+      },
+    ]);
+  };
+
   
 
   // reset 사용해서 변경된 상세페이지로 가게끔 해야함.  reset을 안쓰면 뒤로기가 되는데 그러면 이상해짐
@@ -91,7 +109,7 @@ export default function Detail({
               >
                 <Text>수정</Text>
               </Btn>
-              <Btn onPress={() => {}}>
+              <Btn onPress={() => delPost(word.id)}>
                 <Text>삭제</Text>
               </Btn>
             </>
