@@ -8,7 +8,6 @@ import { PINK_COLOR, GREEN_COLOR, YELLOW_COLOR } from '../common/colors';
 
 import { FlatList } from 'react-native';
 
-
 export default function Home() {
   const { navigate } = useNavigation();
   const [word, setWord] = useState([]);
@@ -110,6 +109,7 @@ const HomeContainer = styled.View`
 `;
 const ButtonText = styled.Text`
   font-weight: 600;
+  color: ${(props) => props.theme.title};
 `;
 const CategoryContainer = styled.View`
   flex-direction: row;
