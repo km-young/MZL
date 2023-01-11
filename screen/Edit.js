@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { StatusBar } from 'expo-status-bar';
 import styled from '@emotion/native';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -29,6 +30,7 @@ export default function Edit({
   const [editMean, setEditMean] = useState('');
   const [editWord, setEditWord] = useState('');
   const [editTmi, setEditTmi] = useState('');
+  const [errCheck, setErrCheck] = useState(false);
 
   // get해오는부분
   const getWord = async () => {
@@ -52,7 +54,7 @@ export default function Edit({
       headerLeft: () => {
         return (
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text>← 뒤로</Text>
+            <BtTitle>← 뒤로</BtTitle>
           </TouchableOpacity>
         );
       },
@@ -60,7 +62,7 @@ export default function Edit({
   }, []);
 
   const editPost = () => {
-    Alert.alert('수정','수정하시겠습니까?', [
+    Alert.alert('수정', '수정하시겠습니까?', [
       {
         text: '취소',
         style: 'destructive',
@@ -84,11 +86,15 @@ export default function Edit({
                     name: 'Home',
                   },
                   {
-                  name: 'Detail',
-                  params: {id:id},
-                }]
+                    name: 'Detail',
+                    params: { id: id },
+                  }]
               })
             } else {
+              // 둘중 하나 공백이면 errCheck를 true로 변경
+              if (editMean === '' || editWord === '') { 
+                setErrCheck(true);
+              }
               return;
             }
           } catch (err) {
@@ -100,11 +106,10 @@ export default function Edit({
   };
 
   // 유효성검사 에러메세지 출력을 위해 변수 생성
-  const errCheck = editMean === '' || editWord === '';
 
-  // reset 사용해서 변경된 상세페이지로 가게끔 해야함.  reset을 안쓰면 뒤로기가 되는데 그러면 이상해짐
   return (
     <KeyboardAwareScrollView>
+      <StatusBar />
       <View key={id}>
         <Section>
           <Title>단어(수정)</Title>
@@ -135,10 +140,7 @@ export default function Edit({
         <ErrText>{errCheck ? '단어와 의미를 입력해주세요.' : ''}</ErrText>
         <ButtonBox>
           <Btn onPress={editPost}>
-            <Text>등록</Text>
-          </Btn>
-          <Btn>
-            <Text></Text>
+            <BtTitle>등록</BtTitle>
           </Btn>
         </ButtonBox>
       </View>
@@ -158,6 +160,7 @@ const Title = styled.Text`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+  color: ${(props) => props.theme.title};
 `;
 const TextBox = styled.View`
   flex: 1;
@@ -177,3 +180,8 @@ const Btn = styled.TouchableOpacity`
 const InputBox = styled.TextInput`
   background-color: #c2e1ff;
 `;
+
+const BtTitle = styled.Text`
+  color: ${(props) => props.theme.title};
+`;
+
