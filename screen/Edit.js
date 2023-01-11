@@ -58,7 +58,7 @@ export default function Edit({
       },
     });
   }, []);
-  
+
   const editPost = () => {
     Alert.alert('수정','수정하시겠습니까?', [
       {
@@ -69,7 +69,7 @@ export default function Edit({
         text: '수정',
         onPress: async () => {
           try {
-            if (editMean !== '' && editWord !== '') {
+            if (editMean !== '' && editWord !== '') { // 단어와 의미가 공란이 아니어야지만 update가 됨
               await updateDoc(doc(dbService, 'Words', id), {
                 mean: editMean,
                 word: editWord,
