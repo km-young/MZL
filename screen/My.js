@@ -108,16 +108,6 @@ export default function My({ navigation: { navigate, reset } }) {
         {words.map((item) => {
           return (
             <CardList
-              style={{
-                backgroundColor:
-                  item.category === 'korean'
-                    ? PINK_COLOR
-                    : item.category === 'english'
-                    ? GREEN_COLOR
-                    : item.category === 'chinese'
-                    ? YELLOW_COLOR
-                    : 'transparent',
-              }}
               key={item.id}
               onPress={() => {
                 navigate('Stacks', {
@@ -127,18 +117,7 @@ export default function My({ navigation: { navigate, reset } }) {
               }}
             >
               <TextBox>{item.mean}</TextBox>
-              <CardBorder
-                style={{
-                  borderColor:
-                    item.category === 'korean'
-                      ? '#F2AEB4'
-                      : item.category === 'english'
-                      ? '#46D989'
-                      : item.category === 'chinese'
-                      ? '#FFC818'
-                      : 'transparent',
-                }}
-              ></CardBorder>
+              <CardBorder></CardBorder>
             </CardList>
           );
         })}
@@ -205,7 +184,15 @@ const TextBox = styled.Text`
 
 const CardList = styled.TouchableOpacity`
   position: relative;
-  background-color: ${PINK_COLOR};
+  background-color: ${(props) => {
+    return props.category === 'korean'
+      ? PINK_COLOR
+      : props.category === 'english'
+      ? GREEN_COLOR
+      : props.category === 'chinese'
+      ? YELLOW_COLOR
+      : 'transparent';
+  }};
   box-shadow: 2px 2px 2px #555;
   align-items: flex-start;
   justify-content: flex-end;
@@ -219,7 +206,16 @@ const CardBorder = styled.View`
   position: absolute;
   width: 330px;
   height: 70px;
-  border: 1px solid #f2aeb4;
+  border: 1px solid;
+  border-color: ${(props) => {
+    return props.category === 'korean'
+      ? '#F2AEB4'
+      : props.category === 'english'
+      ? '#46D989'
+      : props.category === 'chinese'
+      ? '#FFC818'
+      : 'transparent';
+  }};
   top: 10px;
   left: 10px;
 `;
