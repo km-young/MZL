@@ -14,7 +14,7 @@ import {
   updateDoc,
   deleteDoc,
 } from 'firebase/firestore';
-import { dbService } from '../firebase';
+import { dbService, auth } from '../firebase';
 
 export default function Detail({
   navigation: { navigate },
@@ -29,6 +29,8 @@ export default function Detail({
   const [editMean, setEditMean] = useState('');
   const [editWord, setEditWord] = useState('');
   const [editTmi, setEditTmi] = useState('');
+
+  const uid = auth.currentUser?.uid;
 
   // get해오는부분
   const getWord = async () => {
@@ -73,10 +75,8 @@ export default function Detail({
   // 유효성검사 에러메세지 출력을 위해 변수 생성
   const errCheck = editMean === '' || editWord === '';
 
+
   // reset 사용해서 변경된 상세페이지로 가게끔 해야함.  reset을 안쓰면 뒤로기가 되는데 그러면 이상해짐
-  console.log('editMean', Boolean(editMean));
-  console.log('editWord', editWord);
-  console.log('editTmi', editTmi);
   return (
     <KeyboardAwareScrollView>
       <View key={id}>
@@ -140,13 +140,18 @@ export default function Detail({
                 <Text>{word.tmi}</Text>
               </TextBox>
             </Section>
-            <ButtonBox>
-              <Btn onPress={setEdit}>
-                <Text>수정</Text>
-              </Btn>
-              <Btn onPress={() => {}}>
-                <Text>삭제</Text>
-              </Btn>
+              <ButtonBox>
+                {/* 로그인한 uid와 글의 uid가 동일해야지만 수정,삭제버튼이 보임 */}
+              {uid === word.userid ? (
+                <>
+                  <Btn onPress={setEdit}>
+                    <Text>수정</Text>
+                  </Btn>
+                  <Btn onPress={() => {}}>
+                    <Text>삭제</Text>
+                  </Btn>
+                </>
+              ) : ''}
             </ButtonBox>
           </>
         )}
