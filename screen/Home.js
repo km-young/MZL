@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import styled from '@emotion/native';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 
-import { auth, dbService } from '../firebase';
+import { dbService } from '../firebase';
 import { PINK_COLOR, GREEN_COLOR, YELLOW_COLOR } from '../common/colors';
 
 import { FlatList } from 'react-native';
@@ -49,7 +49,9 @@ export default function Home() {
                 setCategory(item);
               }}
             >
-              <ButtonText>{item}</ButtonText>
+              <ButtonText item={item} category={category}>
+                {item}
+              </ButtonText>
             </CategoryButton>
           ))}
         </CategoryContainer>
@@ -69,7 +71,7 @@ export default function Home() {
                         });
                       }}
                     >
-                      <TextBox>{item.mean}</TextBox>
+                      <TextBox>{item.word}</TextBox>
                       <CardBorder category={category}></CardBorder>
                     </CardList>
                   );
@@ -109,7 +111,8 @@ const HomeContainer = styled.View`
 `;
 const ButtonText = styled.Text`
   font-weight: 600;
-  color: ${(props) => props.theme.title};
+  color: ${(props) =>
+    props.item === props.category ? 'red' : props.theme.title};
 `;
 const CategoryContainer = styled.View`
   flex-direction: row;
@@ -118,6 +121,7 @@ const CategoryContainer = styled.View`
   margin-top: 10px;
   margin-bottom: 0px;
 `;
+
 const CategoryButton = styled.TouchableOpacity`
   margin: 10px 40px 10px 40px;
 `;
