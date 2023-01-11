@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import styled from '@emotion/native';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
@@ -6,13 +6,20 @@ import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { dbService } from '../firebase';
 import { PINK_COLOR, GREEN_COLOR, YELLOW_COLOR } from '../common/colors';
 
-import { FlatList } from 'react-native';
+import { FlatList, Text, TouchableOpacity } from 'react-native';
 
-export default function Home() {
+export default function Home({ navigation }) {
   const { navigate } = useNavigation();
   const [word, setWord] = useState([]);
   const [category, setCategory] = useState('');
   const [categoryList] = useState(['korean', 'english', 'chinese']);
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      console.log('HELLO HOME');
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     const q = query(
@@ -31,6 +38,23 @@ export default function Home() {
       });
 
       setWord(newWords);
+
+      navigation.setOptions({
+        headerRight: () => {
+          return (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'Tabs', params: { screen: 'Home' } }],
+                })
+              }
+            >
+              <HomeText>전체보기</HomeText>
+            </TouchableOpacity>
+          );
+        },
+      });
     });
 
     // console.log(auth.currentUser ? '로그인 상태' : '로그아웃 상태');
@@ -109,10 +133,14 @@ export default function Home() {
 const HomeContainer = styled.View`
   flex: 1;
 `;
+const HomeText = styled.Text`
+  color: ${(props) => props.theme.title};
+  padding-right: 10px;
+`;
 const ButtonText = styled.Text`
   font-weight: 600;
   color: ${(props) =>
-    props.item === props.category ? 'red' : props.theme.title};
+    props.item === props.category ? 'lightcoral' : props.theme.title};
 `;
 const CategoryContainer = styled.View`
   flex-direction: row;
