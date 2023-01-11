@@ -92,7 +92,7 @@ export default function Home() {
                         });
                       }}
                     >
-                      <TextBox>{item.mean}</TextBox>
+                      <TextBox>{item.word}</TextBox>
                       <CardBorder category={item.category}></CardBorder>
                     </CardList>
                   );
