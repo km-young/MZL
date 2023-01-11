@@ -17,6 +17,8 @@ import {
 } from 'firebase/firestore';
 import { dbService, auth } from '../firebase';
 import { StatusBar } from 'expo-status-bar';
+import { AntDesign } from '@expo/vector-icons';
+import { async } from '@firebase/util';
 
 export default function Detail({
   navigation,
@@ -24,18 +26,13 @@ export default function Detail({
     params: { id },
   },
 }) {
-  const [word, setWord] = useState({});
-
+  const [word, setWord] = useState(null);
   const uid = auth.currentUser?.uid;
   const { navigate } = useNavigation();
   // get해오는부분
   const getWord = async () => {
     const snapshot = await getDoc(doc(dbService, 'Words', id));
     const data = snapshot.data(); // 가져온 doc의 객체 내용
-    // 아무것도 수정입력 안하고 수정완료 시 데이터 없어지는 현상을 막기위해 setEdit state 여기에 추가함.
-    // setEditMean(data.mean);
-    // setEditTmi(data.tmi);
-    // setEditWord(data.word);
     setWord(data);
     console.log(data);
   };
@@ -73,7 +70,10 @@ export default function Detail({
         onPress: async () => {
           try {
             await deleteDoc(doc(dbService, 'Words', id));
-            navigate('Home');
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Tabs', params: { screen: 'Home' } }],
+            });
           } catch (err) {
             console.log('err:', err);
           }
@@ -82,38 +82,70 @@ export default function Detail({
     ]);
   };
 
-  
+  // 추천기능
+  const countCheck = word?.counter.includes(uid);
+
+  const counter = async () => {
+    // 추천을 한적이 있을 때 클릭 시 추천취소
+    if (countCheck) {
+      await updateDoc(doc(dbService, 'Words', id), {
+        counter: word.counter.filter((prev) => prev !== uid),
+      });
+
+      console.log();
+      getWord();
+      // 추천을 한적이 없을 때 클릭 시 추천추가
+    } else {
+      await updateDoc(doc(dbService, 'Words', id), {
+        counter: [...word.counter, uid],
+      });
+      getWord();
+    }
+  };
 
   // reset 사용해서 변경된 상세페이지로 가게끔 해야함.  reset을 안쓰면 뒤로기가 되는데 그러면 이상해짐
   return (
     <KeyboardAwareScrollView>
       <StatusBar />
       <View key={id}>
-        <NickName>
-          글쓴이 [ <NickNameText>{word.nickname}</NickNameText> ]
-        </NickName>
+        <HeaderContainer>
+          <NickName>
+            글쓴이 [ <NickNameText>{word?.nickname}</NickNameText> ]
+          </NickName>
+          <CounterBox>
+            <TouchableOpacity onPress={() => counter()}>
+              {/* 추천 */}
+              {!countCheck ? (
+                <AntDesign name="like2" size={24} color="black" />
+              ) : (
+                <AntDesign name="like1" size={24} color="black" />
+              )}
+            </TouchableOpacity>
+            <Counter> {word?.counter.length}</Counter>
+          </CounterBox>
+        </HeaderContainer>
 
         <Section>
           <Title>단어</Title>
           <TextBox>
-            <Text>{word.word}</Text>
+            <Text>{word?.word}</Text>
           </TextBox>
         </Section>
         <Section>
           <Title>의미</Title>
           <TextBox>
-            <Text>{word.mean}</Text>
+            <Text>{word?.mean}</Text>
           </TextBox>
         </Section>
         <Section>
           <Title>TMI</Title>
           <TextBox>
-            <Text>{word.tmi}</Text>
+            <Text>{word?.tmi}</Text>
           </TextBox>
         </Section>
         <ButtonBox>
           {/* 로그인한 uid와 글의 uid가 동일해야지만 수정,삭제버튼이 보임 */}
-          {uid === word.userid ? (
+          {uid === word?.userid ? (
             <>
               <Btn
                 onPress={
@@ -128,7 +160,7 @@ export default function Detail({
               >
                 <BtTitle>수정</BtTitle>
               </Btn>
-              <Btn onPress={() => delPost(word.id)}>
+              <Btn onPress={() => delPost(word?.id)}>
                 <BtTitle>삭제</BtTitle>
               </Btn>
             </>
@@ -140,6 +172,22 @@ export default function Detail({
     </KeyboardAwareScrollView>
   );
 }
+const Counter = styled.Text`
+  font-size: 20px;
+`;
+const CounterBox = styled.View`
+  margin: 20px;
+  margin-bottom: 0;
+  flex-direction: row;
+  align-items: center;
+`;
+const HeaderContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 20px;
+  margin-bottom: 0;
+  margin-top: 0;
+`;
 const NickName = styled.Text`
   text-align: center;
   margin: 20px;
@@ -147,13 +195,11 @@ const NickName = styled.Text`
   font-size: 20px;
   font-weight: bold;
   box-shadow: 2px 2px 1px grey;
-  /* color: #a19262; */
 `;
 const NickNameText = styled.Text`
   text-align: center;
   margin: 20px;
   font-size: 20px;
-  /* font-weight: 400; */
 `;
 const Section = styled.View`
   flex: 1;
