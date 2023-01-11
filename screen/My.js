@@ -16,6 +16,9 @@ import {
   GREEN_COLOR,
 } from '../common/colors';
 import { useFocusEffect } from '@react-navigation/native';
+import { useQuery } from 'react-query';
+import { getTemp } from '../common/api';
+import { ActivityIndicator, Text, View } from 'react-native';
 
 export default function My({ navigation: { navigate, reset } }) {
   const displayName = auth.currentUser?.displayName;
@@ -47,7 +50,6 @@ export default function My({ navigation: { navigate, reset } }) {
           id: doc.id,
           ...doc.data(),
         }));
-        console.log('🚀 ~ file: My.js:49 ~ myPost ~ myPost', myPost);
         setWords(myPost);
       });
       return () => {
@@ -79,10 +81,32 @@ export default function My({ navigation: { navigate, reset } }) {
     });
   };
 
+  const { isLoading, error, data: tem } = useQuery('Tmp', getTemp);
+  const nowTime = new Date().toTimeString().split(' ')[0].slice(0, 2) + '00';
+
+  if (error) {
+    console.log(error);
+  }
+
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
   return (
     <Container>
+      {/* API 불러오기 */}
+      <View>
+        {tem.response.body.items.item.map((item) => {
+          if (item.fcstTime === nowTime && item.category === 'TMP') {
+            return (
+              <TmpColumn key={item.fcstValue}>
+                <Text>현재 MZ되기 좋은 {item.fcstValue}도 입니다</Text>
+              </TmpColumn>
+            );
+          }
+        })}
+      </View>
       <UserColumn>
-        {/* API 불러오기 */}
         <UserProfile>
           {onEdit ? (
             <UserNicknameInput
@@ -133,6 +157,12 @@ export default function My({ navigation: { navigate, reset } }) {
 // Css
 const Container = styled.View`
   padding: 30px;
+`;
+const TmpColumn = styled.View`
+  padding: 15px;
+  margin-bottom: 30px;
+  align-items: center;
+  background-color: ${YELLOW_COLOR};
 `;
 const UserColumn = styled.View`
   flex-direction: row;
