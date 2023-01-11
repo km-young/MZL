@@ -49,7 +49,7 @@ export default function Post({ navigation: { navigate, reset, setOptions } }) {
     isEdit: false,
     createdAt: Date.now(),
     nickname: displayName,
-    counter: [],
+    likingUser: [],
   };
 
   const focusWord = useRef();
@@ -121,7 +121,7 @@ export default function Post({ navigation: { navigate, reset, setOptions } }) {
       };
     }, []),
   );
-
+    
   return (
     <Container>
       {/* 스크롤 방향이 같은 것이 두개이상으로 겹치고 있으면 오류메세지가 발생하여 flatlist로 감쌌음 */}

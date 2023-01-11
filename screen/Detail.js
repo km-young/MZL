@@ -83,22 +83,21 @@ export default function Detail({
   };
 
   // 추천기능
-  const countCheck = word?.counter.includes(uid);
+  const countCheck = word?.likingUser.includes(uid);
 
   const counter = async () => {
     // 추천을 한적이 있을 때 클릭 시 추천취소
     if (auth.currentUser) {
       if (countCheck) {
         await updateDoc(doc(dbService, 'Words', id), {
-          counter: word.counter.filter((prev) => prev !== uid),
+          likingUser: word.likingUser.filter((prev) => prev !== uid),
         });
 
-        console.log();
         getWord();
         // 추천을 한적이 없을 때 클릭 시 추천추가
       } else {
         await updateDoc(doc(dbService, 'Words', id), {
-          counter: [...word.counter, uid],
+          likingUser: [...word.likingUser, uid],
         });
         getWord();
       }
@@ -144,7 +143,7 @@ export default function Detail({
                 <AntDesign name="like1" size={24} color="black" />
               )}
             </TouchableOpacity>
-            <Counter> {word?.counter.length}</Counter>
+            <Counter> {word?.likingUser.length}</Counter>
           </CounterBox>
         </HeaderContainer>
 

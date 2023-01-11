@@ -3,9 +3,9 @@ import { useState, useEffect } from 'react';
 import styled from '@emotion/native';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 
-import { dbService } from '../firebase';
+import { dbService,auth } from '../firebase';
 import { PINK_COLOR, GREEN_COLOR, YELLOW_COLOR } from '../common/colors';
-
+import { AntDesign } from '@expo/vector-icons';
 import { FlatList } from 'react-native';
 
 export default function Home() {
@@ -13,6 +13,7 @@ export default function Home() {
   const [word, setWord] = useState([]);
   const [category, setCategory] = useState('');
   const [categoryList] = useState(['korean', 'english', 'chinese']);
+  const uid = auth.currentUser?.uid;
 
   useEffect(() => {
     const q = query(
@@ -35,7 +36,7 @@ export default function Home() {
 
     // console.log(auth.currentUser ? '로그인 상태' : '로그아웃 상태');
   }, []);
-
+  
   const filteredWord = word?.filter((item) => item.category === category);
   return (
     <>
@@ -92,7 +93,13 @@ export default function Home() {
                         });
                       }}
                     >
-                      <TextBox>{item.word}</TextBox>
+                      <Likecontainer>
+                        <TextBox>{item.word}</TextBox>
+                        <Likenum>
+                          <AntDesign name="like2" size={20} color="black" />
+                          {item.likingUser.length}
+                        </Likenum>
+                      </Likecontainer>
                       <CardBorder category={item.category}></CardBorder>
                     </CardList>
                   );
@@ -106,6 +113,22 @@ export default function Home() {
     </>
   );
 }
+
+const Likecontainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 10px;
+  width: 350px;
+  height: 70px;
+  position: absolute;
+`;
+const Likenum = styled.Text`
+  font-size: 15px;
+  font-weight: bold;
+`
 const HomeContainer = styled.View`
   flex: 1;
 `;
