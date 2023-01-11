@@ -87,19 +87,42 @@ export default function Detail({
 
   const counter = async () => {
     // 추천을 한적이 있을 때 클릭 시 추천취소
-    if (countCheck) {
-      await updateDoc(doc(dbService, 'Words', id), {
-        counter: word.counter.filter((prev) => prev !== uid),
-      });
+    if (auth.currentUser) {
+      if (countCheck) {
+        await updateDoc(doc(dbService, 'Words', id), {
+          counter: word.counter.filter((prev) => prev !== uid),
+        });
 
-      console.log();
-      getWord();
-      // 추천을 한적이 없을 때 클릭 시 추천추가
+        console.log();
+        getWord();
+        // 추천을 한적이 없을 때 클릭 시 추천추가
+      } else {
+        await updateDoc(doc(dbService, 'Words', id), {
+          counter: [...word.counter, uid],
+        });
+        getWord();
+      }
+      // 로그인상태가 아니라면 로그인 화면으로 이동
     } else {
-      await updateDoc(doc(dbService, 'Words', id), {
-        counter: [...word.counter, uid],
-      });
-      getWord();
+      Alert.alert('로그인이 필요합니다.', '로그인 페이지로 이동합니다', [
+        {
+          text: 'OK',
+          style: 'default',
+          onPress: () =>
+            navigation.reset({
+              index: 1,
+              routes: [
+                { name: 'Tabs', params: { screen: 'Home' } },
+                {
+                  name: 'Stacks',
+                  params: {
+                    screen: 'Login',
+                  },
+                },
+              ],
+            }),
+        },
+      ]);
     }
   };
 
