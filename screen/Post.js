@@ -49,6 +49,7 @@ export default function Post({ navigation: { navigate, reset, setOptions } }) {
     isEdit: false,
     createdAt: Date.now(),
     nickname: displayName,
+    counter: [],
   };
 
   const focusWord = useRef();
