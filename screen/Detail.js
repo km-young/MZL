@@ -16,8 +16,10 @@ import {
   deleteDoc,
 } from 'firebase/firestore';
 import { dbService, auth } from '../firebase';
+import { StatusBar } from 'expo-status-bar';
 
 export default function Detail({
+  navigation,
   route: {
     params: { id },
   },
@@ -40,6 +42,18 @@ export default function Detail({
 
   useEffect(() => {
     getWord();
+  }, []);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => {
+        return (
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <BtTitle>← 뒤로</BtTitle>
+          </TouchableOpacity>
+        );
+      },
+    });
   }, []);
 
   // 누르면 isEdit이 true/false로 변경됨
@@ -73,6 +87,7 @@ export default function Detail({
   // reset 사용해서 변경된 상세페이지로 가게끔 해야함.  reset을 안쓰면 뒤로기가 되는데 그러면 이상해짐
   return (
     <KeyboardAwareScrollView>
+      <StatusBar />
       <View key={id}>
         <Section>
           <Title>단어</Title>
@@ -107,10 +122,10 @@ export default function Detail({
                   })
                 }
               >
-                <Text>수정</Text>
+                <BtTitle>수정</BtTitle>
               </Btn>
               <Btn onPress={() => delPost(word.id)}>
-                <Text>삭제</Text>
+                <BtTitle>삭제</BtTitle>
               </Btn>
             </>
           ) : (
@@ -134,6 +149,7 @@ const Title = styled.Text`
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+  color: ${(props) => props.theme.title};
 `;
 const TextBox = styled.View`
   flex: 1;
@@ -150,6 +166,7 @@ const ButtonBox = styled.View`
 const Btn = styled.TouchableOpacity`
   padding: 30px 10px;
 `;
-const InputBox = styled.TextInput`
-  background-color: #c2e1ff;
+
+const BtTitle = styled.Text`
+  color: ${(props) => props.theme.title};
 `;

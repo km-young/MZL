@@ -28,3 +28,5 @@ export default function Stacks({ navigation: { goBack } }) {
     </Stack.Navigator>
   );
 }
+
+
