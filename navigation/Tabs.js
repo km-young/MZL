@@ -6,15 +6,23 @@ import Home from '../screen/Home';
 import Post from '../screen/Post';
 import My from '../screen/My';
 // design import
-import { useColorScheme } from 'react-native';
+
+import { TouchableOpacity, useColorScheme } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import {
+  NavigationHelpersContext,
+  useIsFocused,
+} from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
-export default function Tabs() {
+export default function Tabs({ navigation: { reset } }) {
   const isDark = useColorScheme() === 'dark';
+  const onPressHome = () => {
+    console.log('tt');
+  };
   return (
     <Tab.Navigator
       initialRouteName={'Home'}
@@ -42,6 +50,7 @@ export default function Tabs() {
           title: 'MY',
           headerTitleAlign: 'center',
           tabBarLabel: 'MY',
+
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="user" size={size} color={color} />
           ),
@@ -49,10 +58,13 @@ export default function Tabs() {
         name="My"
         component={My}
       />
+
       <Tab.Screen
         options={{
           title: 'MZ Language',
           tabBarLabel: 'Home',
+          unmountOnBlur: true,
+
           tabBarIcon: ({ color, size }) => (
             <Entypo name="home" size={size} color={color} />
           ),
@@ -60,6 +72,7 @@ export default function Tabs() {
         name="Home"
         component={Home}
       />
+
       <Tab.Screen
         options={{
           title: 'Post',
