@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import styled from '@emotion/native';
-import { useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 import { Alert, Text } from 'react-native';
@@ -13,7 +12,6 @@ export default function Login({ navigation: { navigate, reset } }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [alertText, setAlertText] = useState('');
-  console.log('🚀', email, password);
 
   // 비어있는 inputText focus 지정
   const focusEmail = useRef();
