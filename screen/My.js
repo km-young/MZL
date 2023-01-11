@@ -84,6 +84,10 @@ export default function My({ navigation: { navigate, reset } }) {
   const { isLoading, error, data: tem } = useQuery('Tmp', getTemp);
   const nowTime = new Date().toTimeString().split(' ')[0].slice(0, 2) + '00';
 
+  if (error) {
+    console.log(error);
+  }
+
   if (isLoading) {
     return <ActivityIndicator />;
   }
@@ -95,17 +99,9 @@ export default function My({ navigation: { navigate, reset } }) {
         {tem.response.body.items.item.map((item) => {
           if (item.fcstTime === nowTime && item.category === 'TMP') {
             return (
-              <View
-                key={item.fcstValue}
-                style={{
-                  padding: 15,
-                  marginBottom: 30,
-                  alignItems: 'center',
-                  backgroundColor: YELLOW_COLOR,
-                }}
-              >
+              <TmpColumn key={item.fcstValue}>
                 <Text>현재 MZ되기 좋은 {item.fcstValue}도 입니다</Text>
-              </View>
+              </TmpColumn>
             );
           }
         })}
@@ -161,6 +157,12 @@ export default function My({ navigation: { navigate, reset } }) {
 // Css
 const Container = styled.View`
   padding: 30px;
+`;
+const TmpColumn = styled.View`
+  padding: 15px;
+  margin-bottom: 30px;
+  align-items: center;
+  background-color: ${YELLOW_COLOR};
 `;
 const UserColumn = styled.View`
   flex-direction: row;
