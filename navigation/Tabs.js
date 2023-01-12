@@ -31,6 +31,7 @@ export default function Tabs({ navigation: { reset } }) {
         tabBarActiveTintColor: isDark ? 'white' : 'black',
         headerTintColor: isDark ? 'white' : 'black',
         tabBarLabel: 'Home',
+        presentation: 'modal',
       }}
     >
       {/* <Tab.Screen
@@ -64,7 +65,6 @@ export default function Tabs({ navigation: { reset } }) {
           title: 'MZ Language',
           tabBarLabel: 'Home',
           unmountOnBlur: true,
-
           tabBarIcon: ({ color, size }) => (
             <Entypo name="home" size={size} color={color} />
           ),
