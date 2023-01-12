@@ -169,8 +169,7 @@ const Likecontainer = styled.View`
   align-items: flex-end;
   padding-bottom: 10px;
   padding-left: 15px;
-  padding-right: 30px;
-  width: 350px;
+  width: 100%;
   height: 70px;
   position: absolute;
 `;
@@ -259,13 +258,13 @@ const CardList = styled.TouchableOpacity`
   justify-content: flex-end;
   padding-bottom: 10px;
   padding-left: 15px;
-  width: 330px;
+  flex: 1;
   height: 70px;
   margin: 10px;
 `;
 const CardBorder = styled.View`
   position: absolute;
-  width: 330px;
+  width: 105%;
   height: 70px;
   border: 1px solid;
   border-color: ${(props) => {

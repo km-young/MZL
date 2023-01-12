@@ -104,7 +104,7 @@ export default function Register({ navigation: { navigate, reset } }) {
     <ContainerView>
       <KeyboardAwareScrollView
         extraScrollHeight={150}
-        style={{ paddingHorizontal: 30 }}
+        style={{ paddingHorizontal: 10 }}
       >
         <AuthRegisterContainerView>
           <Text style={{ color: 'red', height: 20 }}>{alertText}</Text>
@@ -172,7 +172,7 @@ const ContainerView = styled.View`
 `;
 const AuthRegisterContainerView = styled.View`
   flex: 1;
-  width: 340px;
+  width: 100%;
   background-color: #c7f5dd;
   box-shadow: 1px 4px 4px #808080;
   margin-top: 30%;

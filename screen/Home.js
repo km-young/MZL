@@ -173,7 +173,7 @@ const CategoryContainer = styled.View`
 `;
 
 const CategoryButton = styled.TouchableOpacity`
-  margin: 10px 40px 10px 40px;
+  margin: 5%;
 `;
 
 const CardListContainer = styled.View`
