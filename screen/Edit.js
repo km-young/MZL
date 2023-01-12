@@ -41,7 +41,6 @@ export default function Edit({
     setEditTmi(data.tmi);
     setEditWord(data.word);
     setWord(data);
-    console.log(data);
   };
 
   useEffect(() => {
@@ -98,7 +97,7 @@ export default function Edit({
               return;
             }
           } catch (err) {
-            console.log('err:', err);
+            alert('err:', err);
           }
         },
       },

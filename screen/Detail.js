@@ -34,7 +34,6 @@ export default function Detail({
     const snapshot = await getDoc(doc(dbService, 'Words', id));
     const data = snapshot.data(); // 가져온 doc의 객체 내용
     setWord(data);
-    console.log(data);
   };
 
   useEffect(() => {
@@ -62,7 +61,6 @@ export default function Detail({
   };
 
   const delPost = async () => {
-    console.log('id', id);
     Alert.alert('삭제', '정말로 삭제하시겠습니까??', [
       { text: '취소', style: 'destructive' },
       {
@@ -75,7 +73,7 @@ export default function Detail({
               routes: [{ name: 'Tabs', params: { screen: 'Home' } }],
             });
           } catch (err) {
-            console.log('err:', err);
+            alert('err:', err);
           }
         },
       },

@@ -27,7 +27,6 @@ export default function Home({ navigation: { navigate } }) {
       });
       setWord(newWords);
     });
-    console.log('refresh');
   };
 
   useEffect(() => {
@@ -45,7 +44,6 @@ export default function Home({ navigation: { navigate } }) {
   return (
     <>
       <HomeContainer>
-        {/* //header // list header component */}
         <CategoryContainer>
           <CategoryButton
             onPress={() => {
