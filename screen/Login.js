@@ -7,8 +7,6 @@ import { Alert, Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function Login({ navigation: { navigate, reset } }) {
-  // const { navigate } = useNavigation();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [alertText, setAlertText] = useState('');
@@ -99,9 +97,9 @@ export default function Login({ navigation: { navigate, reset } }) {
             placeholder="PW"
             ref={focusPw}
             onSubmitEditing={() => onSubmitLogin()}
-            // autoComplete="password"
-            // textContentType="password"
-            // secureTextEntry={true}
+            autoComplete="password"
+            textContentType="password"
+            secureTextEntry={true}
           />
           <Buttons>
             <ButtonsText onPress={() => onSubmitLogin()}>LOGIN</ButtonsText>
