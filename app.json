@@ -12,9 +12,12 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/b2c40df4-a935-4eae-8076-65d95f26aa01"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -26,6 +29,15 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b2c40df4-a935-4eae-8076-65d95f26aa01"
+      }
+    },
+    "owner": "hyoloui",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }

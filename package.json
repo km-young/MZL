@@ -23,7 +23,8 @@
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-safe-area-context": "4.4.1",
     "react-native-screen": "^1.0.1",
-    "react-query": "^3.39.2"
+    "react-query": "^3.39.2",
+    "expo-updates": "~0.15.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
