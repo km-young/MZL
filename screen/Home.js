@@ -1,36 +1,21 @@
-import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import styled from '@emotion/native';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 
-import { dbService, auth } from '../firebase';
+import { dbService } from '../firebase';
 import { PINK_COLOR, GREEN_COLOR, YELLOW_COLOR } from '../common/colors';
 
 import { AntDesign } from '@expo/vector-icons';
-import { FlatList, Text, TouchableOpacity } from 'react-native';
+import { FlatList } from 'react-native';
 
-export default function Home({ navigation }) {
-  const { navigate } = useNavigation();
+export default function Home({ navigation: { navigate } }) {
   const [word, setWord] = useState([]);
   const [category, setCategory] = useState('');
   const [categoryList] = useState(['korean', 'english', 'chinese']);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const uid = auth.currentUser?.uid;
-
-  const isFocused = useIsFocused();
-
-  useEffect(() => {
-    if (isFocused) {
-      console.log('HELLO HOME');
-    }
-  }, [isFocused]);
-
-  useEffect(() => {
-    const q = query(
-      collection(dbService, 'Words'),
-      orderBy('createdAt', 'desc'),
-    );
-
+  const q = query(collection(dbService, 'Words'), orderBy('createdAt', 'desc'));
+  const getWord = () => {
     onSnapshot(q, (snapshot) => {
       const newWords = snapshot.docs.map((doc) => {
         const newWord = {
@@ -40,29 +25,21 @@ export default function Home({ navigation }) {
 
         return newWord;
       });
-
       setWord(newWords);
-
-      navigation.setOptions({
-        headerRight: () => {
-          return (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.reset({
-                  index: 0,
-                  routes: [{ name: 'Tabs', params: { screen: 'Home' } }],
-                })
-              }
-            >
-              <HomeText>전체보기</HomeText>
-            </TouchableOpacity>
-          );
-        },
-      });
     });
+    console.log('refresh');
+  };
 
-    // console.log(auth.currentUser ? '로그인 상태' : '로그아웃 상태');
+  useEffect(() => {
+    getWord();
   }, []);
+
+  const onRefresh = () => {
+    /* 스크롤 아래로 당겨서 새로고침 */
+    setIsRefreshing(true);
+    getWord();
+    setIsRefreshing(false);
+  };
 
   const filteredWord = word?.filter((item) => item.category === category);
   return (
@@ -70,6 +47,13 @@ export default function Home({ navigation }) {
       <HomeContainer>
         {/* //header // list header component */}
         <CategoryContainer>
+          <CategoryButton
+            onPress={() => {
+              setCategory('');
+            }}
+          >
+            <AllButtonText category={category}>All</AllButtonText>
+          </CategoryButton>
           {categoryList.map((item) => (
             <CategoryButton
               key={item}
@@ -87,6 +71,8 @@ export default function Home({ navigation }) {
           <CardContainer>
             {category ? (
               <FlatList
+                refreshing={isRefreshing}
+                onRefresh={onRefresh}
                 data={filteredWord}
                 renderItem={({ item }) => {
                   return (
@@ -99,7 +85,6 @@ export default function Home({ navigation }) {
                         });
                       }}
                     >
-
                       <Likecontainer>
                         <TextBox numberOfLines={1}>{item.word}</TextBox>
                         <Likenum>
@@ -116,6 +101,8 @@ export default function Home({ navigation }) {
               />
             ) : (
               <FlatList
+                refreshing={isRefreshing}
+                onRefresh={onRefresh}
                 data={word}
                 renderItem={({ item }) => {
                   return (
@@ -167,14 +154,15 @@ const Likenum = styled.Text`
 const HomeContainer = styled.View`
   flex: 1;
 `;
-const HomeText = styled.Text`
-  color: ${(props) => props.theme.title};
-  padding-right: 10px;
-`;
 const ButtonText = styled.Text`
   font-weight: 600;
   color: ${(props) =>
     props.item === props.category ? 'lightcoral' : props.theme.title};
+`;
+const AllButtonText = styled.Text`
+  font-weight: 600;
+  color: ${(props) =>
+    props.category === '' ? 'lightcoral' : props.theme.title};
 `;
 const CategoryContainer = styled.View`
   flex-direction: row;
