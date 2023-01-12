@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import styled from '@emotion/native';
-import { Alert, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Alert,
+  Text,
+  TouchableOpacity,
+  useColorScheme,
+  View,
+} from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { dbService, auth } from '../firebase';
@@ -14,6 +20,7 @@ export default function Detail({
     params: { id },
   },
 }) {
+  const isDark = useColorScheme() === 'dark';
   const [word, setWord] = useState(null);
   const uid = auth.currentUser?.uid;
   const { navigate } = useNavigation();
@@ -124,9 +131,17 @@ export default function Detail({
             <TouchableOpacity onPress={() => counter()}>
               {/* 추천 */}
               {!countCheck ? (
-                <AntDesign name="like2" size={24} color="black" />
+                <AntDesign
+                  name="like2"
+                  size={24}
+                  color={isDark ? 'white' : 'black'}
+                />
               ) : (
-                <AntDesign name="like1" size={24} color="black" />
+                <AntDesign
+                  name="like1"
+                  size={24}
+                  color={isDark ? 'white' : 'black'}
+                />
               )}
             </TouchableOpacity>
             <Counter> {word?.likingUser.length}</Counter>
@@ -182,6 +197,7 @@ export default function Detail({
 }
 const Counter = styled.Text`
   font-size: 20px;
+  color: ${(props) => props.theme.title};
 `;
 const CounterBox = styled.View`
   margin: 20px;
@@ -203,6 +219,7 @@ const NickName = styled.Text`
   font-size: 20px;
   font-weight: bold;
   box-shadow: 2px 2px 1px grey;
+  color: ${(props) => props.theme.title};
 `;
 const NickNameText = styled.Text`
   text-align: center;
