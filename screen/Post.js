@@ -5,7 +5,7 @@ import { BLUE_COLOR } from '../common/colors';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { auth, dbService } from '../firebase';
 import { addDoc, collection } from 'firebase/firestore';
-import { Alert, FlatList } from 'react-native';
+import { Alert, FlatList, Text } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function Post({ navigation: { navigate, reset, setOptions } }) {
@@ -121,7 +121,7 @@ export default function Post({ navigation: { navigate, reset, setOptions } }) {
       };
     }, []),
   );
-    
+
   return (
     <Container>
       {/* 스크롤 방향이 같은 것이 두개이상으로 겹치고 있으면 오류메세지가 발생하여 flatlist로 감쌌음 */}
@@ -131,7 +131,9 @@ export default function Post({ navigation: { navigate, reset, setOptions } }) {
         ListHeaderComponent={
           <KeyboardAwareScrollView extraScrollHeight={120}>
             <InputBox style={{ zIndex: 1 }}>
-              <InputLabel>CATEGORY</InputLabel>
+              <InputLabel>
+                CATEGORY<Text style={{ color: 'red' }}> *</Text>
+              </InputLabel>
               <DropDownPicker
                 open={open}
                 value={value}
@@ -144,7 +146,9 @@ export default function Post({ navigation: { navigate, reset, setOptions } }) {
               />
             </InputBox>
             <InputBox>
-              <InputLabel>단어</InputLabel>
+              <InputLabel>
+                단어<Text style={{ color: 'red' }}> *</Text>
+              </InputLabel>
               <Input
                 ref={focusWord}
                 value={word}
@@ -152,7 +156,9 @@ export default function Post({ navigation: { navigate, reset, setOptions } }) {
               />
             </InputBox>
             <InputBox>
-              <InputLabel>의미</InputLabel>
+              <InputLabel>
+                의미<Text style={{ color: 'red' }}> *</Text>
+              </InputLabel>
               <Input
                 ref={focusMean}
                 style={{ height: 120 }}

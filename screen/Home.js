@@ -85,7 +85,14 @@ export default function Home({ navigation: { navigate } }) {
                         });
                       }}
                     >
-                      <TextBox>{item.word}</TextBox>
+                      <Likecontainer>
+                        <TextBox numberOfLines={1}>{item.word}</TextBox>
+                        <Likenum>
+                          <AntDesign name="like2" size={20} color="black" />
+                          {item.likingUser.length}
+                        </Likenum>
+                      </Likecontainer>
+
                       <CardBorder category={category}></CardBorder>
                     </CardList>
                   );
@@ -109,7 +116,7 @@ export default function Home({ navigation: { navigate } }) {
                       }}
                     >
                       <Likecontainer>
-                        <TextBox>{item.word}</TextBox>
+                        <TextBox numberOfLines={1}>{item.word}</TextBox>
                         <Likenum>
                           <AntDesign name="like2" size={20} color="black" />
                           {item.likingUser.length}
@@ -177,6 +184,7 @@ const CardListContainer = styled.View`
 const TextBox = styled.Text`
   font-size: 25px;
   font-weight: 800;
+  width: 90%;
 `;
 
 const CardList = styled.TouchableOpacity`
