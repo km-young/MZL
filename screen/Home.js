@@ -99,7 +99,15 @@ export default function Home({ navigation }) {
                         });
                       }}
                     >
-                      <TextBox numberOfLines={1}>{item.word}</TextBox>
+
+                      <Likecontainer>
+                        <TextBox numberOfLines={1}>{item.word}</TextBox>
+                        <Likenum>
+                          <AntDesign name="like2" size={20} color="black" />
+                          {item.likingUser.length}
+                        </Likenum>
+                      </Likecontainer>
+
                       <CardBorder category={category}></CardBorder>
                     </CardList>
                   );
