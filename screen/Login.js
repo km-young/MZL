@@ -121,7 +121,7 @@ const ContainerView = styled.View`
   align-items: center;
 `;
 const AuthLoginContainerView = styled.View`
-  width: 340px;
+  width: 100%;
   background-color: #c7f5dd;
   box-shadow: 1px 4px 4px #808080;
   justify-content: center;
