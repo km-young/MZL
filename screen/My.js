@@ -228,20 +228,17 @@ const LogoutBtnText = styled.Text`
   color: red;
 `;
 const MyWordsColumn = styled.ScrollView``;
-
 const Title = styled.Text`
   font-size: 18px;
   font-weight: bold;
   margin: 30px 0 10px;
   color: ${(props) => props.theme.title};
 `;
-
 const TextBox = styled.Text`
   font-size: 25px;
   font-weight: 800;
   width: 90%;
 `;
-
 const CardList = styled.TouchableOpacity`
   position: relative;
   background-color: ${(props) => {

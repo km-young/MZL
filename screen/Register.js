@@ -5,7 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { auth } from '../firebase';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
-export default function Register({ navigation: { navigate, reset } }) {
+export default function Register({ navigation: { reset } }) {
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,10 +17,6 @@ export default function Register({ navigation: { navigate, reset } }) {
   const focusEmail = useRef();
   const focusPw = useRef();
   const focusPwCheck = useRef();
-
-  // const auth = authService();
-
-  console.log(displayName, email, password);
 
   const alertTextTimer = (message) => {
     setAlertText(message);
@@ -87,7 +83,11 @@ export default function Register({ navigation: { navigate, reset } }) {
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            alertTextTimer('🚨: update profile error', errorCode, errorMessage);
+            alertTextTimer(
+              '🚨: update profile error:',
+              errorCode,
+              errorMessage,
+            );
           });
       })
       .catch((error) => {
@@ -98,6 +98,7 @@ export default function Register({ navigation: { navigate, reset } }) {
           focusEmail.current.focus();
           return;
         }
+        alertTextTimer('🚨: create user error:', errorCode, errorMessage);
       });
   };
   return (
@@ -138,10 +139,9 @@ export default function Register({ navigation: { navigate, reset } }) {
               placeholder="Password"
               ref={focusPw}
               onSubmitEditing={() => focusPwCheck.current.focus()}
-              // 배포시 활성화
-              // autoComplete="password"
-              // textContentType="password"
-              // secureTextEntry={true}
+              autoComplete="password"
+              textContentType="password"
+              secureTextEntry={true}
             />
             <InputBox
               value={passwordCheck}
@@ -149,10 +149,9 @@ export default function Register({ navigation: { navigate, reset } }) {
               placeholder="Password check"
               ref={focusPwCheck}
               onSubmitEditing={() => onSubmitRegister()}
-              // 배포시 활성화
-              // autoComplete="password"
-              // textContentType="password"
-              // secureTextEntry={true}
+              autoComplete="password"
+              textContentType="password"
+              secureTextEntry={true}
             />
           </View>
 
@@ -191,13 +190,11 @@ const InputBox = styled.TextInput`
   border-bottom-width: 1px;
   border-color: #808080;
 `;
-
 const Buttons = styled.TouchableOpacity`
   height: 20px;
   text-align: center;
   margin-top: 30px;
 `;
-
 const ButtonsText = styled.Text`
   text-align: center;
   font-size: 20px;
