@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "rn-turkey-project",
+    "slug": "rn-turkey-project",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/b2c40df4-a935-4eae-8076-65d95f26aa01"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b2c40df4-a935-4eae-8076-65d95f26aa01"
+      }
+    },
+    "owner": "hyoloui",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
+  }
+}
