@@ -92,7 +92,8 @@ export default function My({ navigation: { navigate, reset } }) {
   if (isLoading) {
     return <ActivityIndicator />;
   }
-
+  console.log('tem', tem.response.body.items);
+  console.log('temmmm', tem);
   return (
     <Container>
       {/* API 불러오기 */}
@@ -145,13 +146,15 @@ export default function My({ navigation: { navigate, reset } }) {
                 });
               }}
             >
+
               <Likecontainer>
-                <TextBox>{item.word}</TextBox>
+                <TextBox numberOfLines={1}>{item.word}</TextBox>
                 <Likenum>
                   <AntDesign name="like2" size={20} color="black" />
                   {item.likingUser.length}
                 </Likenum>
               </Likecontainer>
+
               <CardBorder category={item.category}></CardBorder>
             </CardList>
           );
@@ -239,6 +242,7 @@ const Title = styled.Text`
 const TextBox = styled.Text`
   font-size: 25px;
   font-weight: 800;
+  width: 90%;
 `;
 
 const CardList = styled.TouchableOpacity`
