@@ -260,7 +260,7 @@ const CardList = styled.TouchableOpacity`
   padding-left: 15px;
   flex: 1;
   height: 70px;
-  margin: 10px;
+  margin: 12px;
 `;
 const CardBorder = styled.View`
   position: absolute;
