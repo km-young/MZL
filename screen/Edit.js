@@ -1,21 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import styled from '@emotion/native';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import {
-  onSnapshot,
-  query,
-  collection,
-  doc,
-  orderBy,
-  addDoc,
-  getDoc,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-} from 'firebase/firestore';
-import { dbService, auth } from '../firebase';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { dbService } from '../firebase';
 import { Alert } from 'react-native';
 
 export default function Edit({
@@ -26,7 +15,6 @@ export default function Edit({
   },
 }) {
   const [word, setWord] = useState({});
-
   const [editMean, setEditMean] = useState('');
   const [editWord, setEditWord] = useState('');
   const [editTmi, setEditTmi] = useState('');
@@ -70,7 +58,8 @@ export default function Edit({
         text: '수정',
         onPress: async () => {
           try {
-            if (editMean !== '' && editWord !== '') { // 단어와 의미가 공란이 아니어야지만 update가 됨
+            if (editMean !== '' && editWord !== '') {
+              // 단어와 의미가 공란이 아니어야지만 update가 됨
               await updateDoc(doc(dbService, 'Words', id), {
                 mean: editMean,
                 word: editWord,
@@ -87,11 +76,12 @@ export default function Edit({
                   {
                     name: 'Detail',
                     params: { id: id },
-                  }]
-              })
+                  },
+                ],
+              });
             } else {
               // 둘중 하나 공백이면 errCheck를 true로 변경
-              if (editMean === '' || editWord === '') { 
+              if (editMean === '' || editWord === '') {
                 setErrCheck(true);
               }
               return;
@@ -188,4 +178,3 @@ const InputBox = styled.TextInput`
 const BtTitle = styled.Text`
   color: ${(props) => props.theme.title};
 `;
-

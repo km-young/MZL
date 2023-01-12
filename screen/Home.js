@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import styled from '@emotion/native';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
-
 import { dbService } from '../firebase';
 import { PINK_COLOR, GREEN_COLOR, YELLOW_COLOR } from '../common/colors';
-
 import { AntDesign } from '@expo/vector-icons';
 import { FlatList } from 'react-native';
 
@@ -13,7 +11,6 @@ export default function Home({ navigation: { navigate } }) {
   const [category, setCategory] = useState('');
   const [categoryList] = useState(['korean', 'english', 'chinese']);
   const [isRefreshing, setIsRefreshing] = useState(false);
-
   const q = query(collection(dbService, 'Words'), orderBy('createdAt', 'desc'));
   const getWord = () => {
     onSnapshot(q, (snapshot) => {
