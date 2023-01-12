@@ -8,6 +8,7 @@ import {
 } from 'firebase/firestore';
 import { auth, dbService } from '../firebase';
 import { updateProfile } from 'firebase/auth';
+import { AntDesign } from '@expo/vector-icons';
 import styled from '@emotion/native';
 import {
   PINK_COLOR,
@@ -144,7 +145,13 @@ export default function My({ navigation: { navigate, reset } }) {
                 });
               }}
             >
-              <TextBox>{item.word}</TextBox>
+              <Likecontainer>
+                <TextBox>{item.word}</TextBox>
+                <Likenum>
+                  <AntDesign name="like2" size={20} color="black" />
+                  {item.likingUser.length}
+                </Likenum>
+              </Likecontainer>
               <CardBorder category={item.category}></CardBorder>
             </CardList>
           );
@@ -155,6 +162,22 @@ export default function My({ navigation: { navigate, reset } }) {
 }
 
 // Css
+const Likecontainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 10px;
+  width: 350px;
+  height: 70px;
+  position: absolute;
+`;
+const Likenum = styled.Text`
+  font-size: 15px;
+  font-weight: bold;
+`;
+
 const Container = styled.View`
   padding: 30px;
 `;
@@ -210,6 +233,7 @@ const Title = styled.Text`
   font-size: 18px;
   font-weight: bold;
   margin: 30px 0 10px;
+  color: ${(props) => props.theme.title};
 `;
 
 const TextBox = styled.Text`

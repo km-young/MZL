@@ -64,9 +64,9 @@ export default function Detail({
   const delPost = async () => {
     console.log('id', id);
     Alert.alert('삭제', '정말로 삭제하시겠습니까??', [
-      { text: 'cancel', style: 'destructive' },
+      { text: '취소', style: 'destructive' },
       {
-        text: 'OK, Delete it.',
+        text: '삭제',
         onPress: async () => {
           try {
             await deleteDoc(doc(dbService, 'Words', id));
