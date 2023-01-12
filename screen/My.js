@@ -92,8 +92,7 @@ export default function My({ navigation: { navigate, reset } }) {
   if (isLoading) {
     return <ActivityIndicator />;
   }
-  console.log('tem', tem.response.body.items);
-  console.log('temmmm', tem);
+
   return (
     <Container>
       {/* API 불러오기 */}
@@ -146,7 +145,6 @@ export default function My({ navigation: { navigate, reset } }) {
                 });
               }}
             >
-
               <Likecontainer>
                 <TextBox numberOfLines={1}>{item.word}</TextBox>
                 <Likenum>
@@ -171,7 +169,7 @@ const Likecontainer = styled.View`
   align-items: flex-end;
   padding-bottom: 10px;
   padding-left: 15px;
-  padding-right: 10px;
+  padding-right: 30px;
   width: 350px;
   height: 70px;
   position: absolute;
