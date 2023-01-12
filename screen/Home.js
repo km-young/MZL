@@ -3,12 +3,11 @@ import { useState, useEffect } from 'react';
 import styled from '@emotion/native';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 
-import { dbService,auth } from '../firebase';
+import { dbService, auth } from '../firebase';
 import { PINK_COLOR, GREEN_COLOR, YELLOW_COLOR } from '../common/colors';
 
 import { AntDesign } from '@expo/vector-icons';
-import { FlatList,Text, TouchableOpacity } from 'react-native';
-
+import { FlatList, Text, TouchableOpacity } from 'react-native';
 
 export default function Home({ navigation }) {
   const { navigate } = useNavigation();
@@ -25,7 +24,6 @@ export default function Home({ navigation }) {
       console.log('HELLO HOME');
     }
   }, [isFocused]);
-
 
   useEffect(() => {
     const q = query(
@@ -65,7 +63,7 @@ export default function Home({ navigation }) {
 
     // console.log(auth.currentUser ? '로그인 상태' : '로그아웃 상태');
   }, []);
-  
+
   const filteredWord = word?.filter((item) => item.category === category);
   return (
     <>
@@ -101,7 +99,7 @@ export default function Home({ navigation }) {
                         });
                       }}
                     >
-                      <TextBox>{item.word}</TextBox>
+                      <TextBox numberOfLines={1}>{item.word}</TextBox>
                       <CardBorder category={category}></CardBorder>
                     </CardList>
                   );
@@ -123,7 +121,7 @@ export default function Home({ navigation }) {
                       }}
                     >
                       <Likecontainer>
-                        <TextBox>{item.word}</TextBox>
+                        <TextBox numberOfLines={1}>{item.word}</TextBox>
                         <Likenum>
                           <AntDesign name="like2" size={20} color="black" />
                           {item.likingUser.length}
@@ -157,7 +155,7 @@ const Likecontainer = styled.View`
 const Likenum = styled.Text`
   font-size: 15px;
   font-weight: bold;
-`
+`;
 const HomeContainer = styled.View`
   flex: 1;
 `;
@@ -190,6 +188,7 @@ const CardListContainer = styled.View`
 const TextBox = styled.Text`
   font-size: 25px;
   font-weight: 800;
+  width: 90%;
 `;
 
 const CardList = styled.TouchableOpacity`
