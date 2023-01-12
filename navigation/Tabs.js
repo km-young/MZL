@@ -1,28 +1,19 @@
 import React from 'react';
 // bottom-tab-navigator
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Login from '../screen/Login';
 import Home from '../screen/Home';
 import Post from '../screen/Post';
 import My from '../screen/My';
 // design import
-
-import { TouchableOpacity, useColorScheme } from 'react-native';
+import { useColorScheme } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import {
-  NavigationHelpersContext,
-  useIsFocused,
-} from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
 export default function Tabs({ navigation: { reset } }) {
   const isDark = useColorScheme() === 'dark';
-  const onPressHome = () => {
-    console.log('tt');
-  };
   return (
     <Tab.Navigator
       initialRouteName={'Home'}
@@ -34,18 +25,6 @@ export default function Tabs({ navigation: { reset } }) {
         presentation: 'modal',
       }}
     >
-      {/* <Tab.Screen
-        options={{
-          title: 'Login',
-          headerTitleAlign: 'center',
-          tabBarLabel: 'Login',
-          tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="user" size={size} color={color} />
-          ),
-        }}
-        name="Login"
-        component={Login}
-      /> */}
       <Tab.Screen
         options={{
           title: 'MY',
