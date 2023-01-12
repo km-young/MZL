@@ -121,7 +121,12 @@ export default function Edit({
         <Section>
           <Title>의미(수정)</Title>
           <TextBox background="#C2E1FF">
-            <InputBox onChangeText={setEditMean} defaultValue={word.mean} />
+            <InputBox
+              onChangeText={setEditMean}
+              defaultValue={word.mean}
+              multiline={true}
+              numberOfLines={10}
+            />
           </TextBox>
         </Section>
 
