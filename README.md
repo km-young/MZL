@@ -8,7 +8,7 @@
 <h4>
 Scan the following QR code with an iOS<br>device to open it in Expo Go or a development build.
 </h4>
-<image width='300px' src='https://qr.expo.dev/eas-update?updateId=05d8a0d0-7eff-4cdd-96f4-b602f96de30e&appScheme=exp&host=u.expo.dev'>
+<image width='300px' src='https://qr.expo.dev/eas-update?updateId=598f9023-cee1-4181-bf17-e923d107e00d&appScheme=exp&host=u.expo.dev'>
 
 
 
@@ -19,4 +19,4 @@ Scan the following QR code with an iOS<br>device to open it in Expo Go or a deve
 <h4>
 Scan the following QR code with an Android<br> device to open it in Expo Go or a development build.
 </h4>
-<image width='300px' src='https://qr.expo.dev/eas-update?updateId=c5cee118-5ac2-46b4-a789-d89d989cd679&appScheme=exp&host=u.expo.dev'>
+<image width='300px' src='https://qr.expo.dev/eas-update?updateId=7ceb3d0c-55b0-4843-9c5e-417b5e182c0d&appScheme=exp&host=u.expo.dev'>
