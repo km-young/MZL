@@ -2,15 +2,26 @@
 <h1>왕초보 mz완성</h1>
 
 <hr>
-
-![Create](https://user-images.githubusercontent.com/115724947/227960256-4a9cadff-cf11-4917-b0e3-3800adf94c5c.png)
-
-![Detail](https://user-images.githubusercontent.com/115724947/227960265-c98c2be4-e180-477d-89aa-7eb4d698769f.png)
-
-![Auth](https://user-images.githubusercontent.com/115724947/227960270-d3758a9a-685c-4d18-82d0-9204b4b72104.png)
-
-![Home-Light](https://user-images.githubusercontent.com/115724947/227960276-62f46a86-9ffc-4e76-8afb-042e5434c4cd.png)
-
+<h2>회원가입</h2>
+![회원가입_AdobeExpress](https://user-images.githubusercontent.com/110464690/228229178-7ef31971-c2cb-4002-ba8e-faf5ced95087.gif)
+<hr>
+<h2>로그인</h2>
+![로그인_AdobeExpress](https://user-images.githubusercontent.com/110464690/228229291-3f01fc9d-3477-4a38-b5ad-0e2438b06dc1.gif)
+<hr>
+<h2>홈</h2>
+![홈_AdobeExpress](https://user-images.githubusercontent.com/110464690/228229345-a0393e9e-9d26-40b0-84ef-8ebdd6830623.gif)
+<hr>
+<h2>글쓰기</h2>
+![글쓰기_AdobeExpress](https://user-images.githubusercontent.com/110464690/228229409-94add28d-0f54-49d5-8701-2894c80153a9.gif)
+<hr>
+<h2>좋아요</h2>
+![좋아요_AdobeExpress](https://user-images.githubusercontent.com/110464690/228229456-0db6cb44-2569-4aab-be39-4bbfff7cc1f5.gif)
+<hr>
+<h2>닉네임변경</h2>
+![닉네임변경_AdobeExpress](https://user-images.githubusercontent.com/110464690/228229513-25899472-be6c-4aa0-a015-9c75a7207f84.gif)
+<hr>
+<h2>글수정,삭제</h2>
+![수정삭제_AdobeExpress](https://user-images.githubusercontent.com/110464690/228229582-0d99f294-ef7d-4c65-91ef-958848b6f7f3.gif)
 
 
 <h3>Preview iOS update</h3>
